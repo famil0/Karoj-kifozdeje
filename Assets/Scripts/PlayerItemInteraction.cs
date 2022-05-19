@@ -5,21 +5,30 @@ using UnityEngine;
 public class PlayerItemInteraction : MonoBehaviour
 {
 
-    public GameObject handItem;
 
     void OnCollisionEnter(Collision col)
     {
-        if (handItem == null && col.gameObject.tag == "Box" && col.gameObject.transform.GetChild(0).childCount == 1 && Input.GetKey(KeyCode.Space))
+        if (FindChildByName(transform.gameObject, "handitem").transform.childCount == 0 && FindChildByName(col.gameObject, "Item").transform.childCount != 0 && Input.GetKey(KeyCode.Space))
         {
-            handItem = col.gameObject.transform.GetChild(0).GetChild(0).gameObject;
-            handItem.transform.parent = transform.GetChild(1).transform;
-            handItem.transform.localPosition = new Vector3(0, 0, handItem.transform.position.z);
+            GameObject item = FindChildByName(col.gameObject, "Item").transform.GetChild(0).gameObject;
+            item.transform.parent = FindChildByName(transform.gameObject, "handitem").transform;
+            item.transform.localPosition = new Vector3(0, 0, item.transform.position.z);
         }
-        else if (handItem != null && col.gameObject.tag == "Box" && col.gameObject.transform.GetChild(0).childCount == 0 && Input.GetKey(KeyCode.Space))
+        else if (FindChildByName(transform.gameObject, "handitem").transform.childCount == 1 && FindChildByName(col.gameObject, "Item").transform.childCount == 0 && Input.GetKey(KeyCode.Space))
         {
-            handItem.transform.parent = col.gameObject.transform.GetChild(0).transform;
-            col.gameObject.transform.GetChild(0).GetChild(0).transform.localPosition = Vector3.zero;
-            handItem = null;
+            GameObject item = FindChildByName(transform.gameObject, "handitem").transform.GetChild(0).gameObject;
+            item.transform.parent = FindChildByName(col.gameObject, "Item").transform;
+            item.transform.localPosition = Vector3.zero;
         }
+    }
+
+    private GameObject FindChildByName(GameObject parentGameObject, string name)
+    {
+        for (int i = 0; i < parentGameObject.transform.childCount; i++)
+        {
+            if (parentGameObject.transform.GetChild(i).name == name) return parentGameObject.transform.GetChild(i).gameObject;
+        }
+
+        return null;
     }
 }
