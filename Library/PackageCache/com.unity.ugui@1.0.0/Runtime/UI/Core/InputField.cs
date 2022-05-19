@@ -13,7 +13,7 @@ namespace UnityEngine.UI
     /// Turn a simple label into a interactable input field.
     /// </summary>
 
-    [AddComponentMenu("UI/Input Field", 31)]
+    [AddComponentMenu("UI/Legacy/Input Field", 103)]
     public class InputField
         : Selectable,
         IUpdateSelectedHandler,
@@ -187,12 +187,24 @@ namespace UnityEngine.UI
 
         [Serializable]
         /// <summary>
+        ///   Unity Event with a inputfield as a param.
+        /// </summary>
+        public class EndEditEvent : UnityEvent<string> {}
+
+        [Serializable]
+        /// <summary>
         /// The callback sent anytime the Inputfield is updated.
         /// </summary>
         public class OnChangeEvent : UnityEvent<string> {}
 
         protected TouchScreenKeyboard m_Keyboard;
         static private readonly char[] kSeparators = { ' ', '.', ',', '\t', '\r', '\n' };
+
+    #if UNITY_ANDROID
+        static private bool s_IsQuestDeviceEvaluated = false;
+    #endif // if UNITY_ANDROID
+
+        static private bool s_IsQuestDevice = false;
 
         /// <summary>
         /// Text Text used to display the input's value.
@@ -238,8 +250,12 @@ namespace UnityEngine.UI
         [FormerlySerializedAs("onSubmit")]
         [FormerlySerializedAs("m_OnSubmit")]
         [FormerlySerializedAs("m_EndEdit")]
+        [FormerlySerializedAs("m_OnEndEdit")]
         [SerializeField]
-        private SubmitEvent m_OnEndEdit = new SubmitEvent();
+        private SubmitEvent m_OnSubmit = new SubmitEvent();
+
+        [SerializeField]
+        private EndEditEvent m_OnDidEndEdit = new EndEditEvent();
 
         [FormerlySerializedAs("onValueChange")]
         [FormerlySerializedAs("m_OnValueChange")]
@@ -261,6 +277,7 @@ namespace UnityEngine.UI
         private Color m_SelectionColor = new Color(168f / 255f, 206f / 255f, 255f / 255f, 192f / 255f);
 
         [SerializeField]
+        [Multiline]
         [FormerlySerializedAs("mValue")]
         protected string m_Text = string.Empty;
 
@@ -321,6 +338,7 @@ namespace UnityEngine.UI
 
         // Doesn't include dot and @ on purpose! See usage for details.
         const string kEmailSpecialCharacters = "!#$%&'*+-/=?^_`{|}~";
+        const string kOculusQuestDeviceModel = "Oculus Quest";
 
         protected InputField()
         {
@@ -353,6 +371,7 @@ namespace UnityEngine.UI
         /// </summary>
         /// <example>
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using System.Collections;
         /// using UnityEngine.UI; // Required when Using UI elements.
@@ -367,7 +386,8 @@ namespace UnityEngine.UI
         ///         mainInputField.shouldHideMobileInput = true;
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
         public bool shouldHideMobileInput
         {
@@ -405,6 +425,7 @@ namespace UnityEngine.UI
             }
         }
 
+
         /// <summary>
         /// Input field's current text value. This is not necessarily the same as what is visible on screen.
         /// </summary>
@@ -413,6 +434,7 @@ namespace UnityEngine.UI
         /// </remarks>
         /// <example>
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using System.Collections;
         /// using UnityEngine.UI; // Required when Using UI elements.
@@ -426,7 +448,8 @@ namespace UnityEngine.UI
         ///         mainInputField.text = "Enter Text Here...";
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
         public string text
         {
@@ -506,6 +529,7 @@ namespace UnityEngine.UI
         /// </summary>
         /// <example>
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using System.Collections;
         /// using UnityEngine.UI; // Required when Using UI elements.
@@ -523,7 +547,8 @@ namespace UnityEngine.UI
         ///         }
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
         public bool isFocused
         {
@@ -603,6 +628,7 @@ namespace UnityEngine.UI
         /// </summary>
         /// <example>
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using System.Collections;
         /// using UnityEngine.UI; // Required when Using UI elements.
@@ -617,7 +643,8 @@ namespace UnityEngine.UI
         ///         mainInputField.selectionColor = Color.red;
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
         public Color selectionColor { get { return m_SelectionColor; } set { if (SetPropertyUtility.SetColor(ref m_SelectionColor, value)) MarkGeometryAsDirty(); } }
 
@@ -626,6 +653,7 @@ namespace UnityEngine.UI
         /// </summary>
         /// <example>
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using System.Collections;
         /// using UnityEngine.UI; // Required when Using UI elements.
@@ -654,9 +682,49 @@ namespace UnityEngine.UI
         ///         mainInputField.onEndEdit.AddListener(delegate {LockInput(mainInputField); });
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
-        public SubmitEvent onEndEdit { get { return m_OnEndEdit; } set { SetPropertyUtility.SetClass(ref m_OnEndEdit, value); } }
+        public EndEditEvent onEndEdit { get { return m_OnDidEndEdit; } set { SetPropertyUtility.SetClass(ref m_OnDidEndEdit, value); } }
+
+        /// <summary>
+        /// The Unity Event to call when editing has ended
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// <![CDATA[
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.UI; // Required when Using UI elements.
+        ///
+        /// public class Example : MonoBehaviour
+        /// {
+        ///     public InputField mainInputField;
+        ///
+        ///     // Checks if there is anything entered into the input field.
+        ///     void LockInput(InputField input)
+        ///     {
+        ///         if (input.text.Length > 0)
+        ///         {
+        ///             Debug.Log("Text has been entered");
+        ///         }
+        ///         else if (input.text.Length == 0)
+        ///         {
+        ///             Debug.Log("Main Input Empty");
+        ///         }
+        ///     }
+        ///
+        ///     public void Start()
+        ///     {
+        ///         //Adds a listener that invokes the "LockInput" method when the player finishes editing the main input field.
+        ///         //Passes the main input field into the method when "LockInput" is invoked
+        ///         mainInputField.onSubmit.AddListener(delegate {LockInput(mainInputField); });
+        ///     }
+        /// }
+        /// ]]>
+        ///</code>
+        /// </example>
+        public SubmitEvent onSubmit { get { return m_OnSubmit; } set { SetPropertyUtility.SetClass(ref m_OnSubmit, value); } }
 
         [Obsolete("onValueChange has been renamed to onValueChanged")]
         public OnChangeEvent onValueChange { get { return onValueChanged; } set { onValueChanged = value; } }
@@ -666,6 +734,7 @@ namespace UnityEngine.UI
         /// </summary>
         /// <example>
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using System.Collections;
         /// using UnityEngine.UI; // Required when Using UI elements.
@@ -686,7 +755,8 @@ namespace UnityEngine.UI
         ///         Debug.Log("Value Changed");
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
         public OnChangeEvent onValueChanged { get { return m_OnValueChanged; } set { SetPropertyUtility.SetClass(ref m_OnValueChanged, value); } }
 
@@ -695,6 +765,7 @@ namespace UnityEngine.UI
         /// </summary>
         /// <example>
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using System.Collections;
         /// using UnityEngine.UI; // Required when Using UI elements.
@@ -720,7 +791,8 @@ namespace UnityEngine.UI
         ///         return charToValidate;
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
         public OnValidateInput onValidateInput { get { return m_OnValidateInput; } set { SetPropertyUtility.SetClass(ref m_OnValidateInput, value); } }
 
@@ -729,6 +801,7 @@ namespace UnityEngine.UI
         /// </summary>
         /// <example>
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using System.Collections;
         /// using UnityEngine.UI; // Required when Using UI elements.
@@ -744,7 +817,8 @@ namespace UnityEngine.UI
         ///         mainInputField.characterLimit = playerName.Length;
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
         public int characterLimit
         {
@@ -768,6 +842,7 @@ namespace UnityEngine.UI
         /// </remarks>
         /// <example>
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using System.Collections;
         /// using UnityEngine.UI; // Required when Using UI elements.
@@ -783,7 +858,8 @@ namespace UnityEngine.UI
         ///         mainInputField.characterLimit = playerName.Length;
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
         public ContentType contentType { get { return m_ContentType; } set { if (SetPropertyUtility.SetStruct(ref m_ContentType, value)) EnforceContentType(); } }
 
@@ -792,6 +868,7 @@ namespace UnityEngine.UI
         /// </summary>
         /// <example>
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using System.Collections;
         /// using UnityEngine.UI; // Required when Using UI elements.
@@ -820,7 +897,8 @@ namespace UnityEngine.UI
         ///         }
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
         public LineType lineType
         {
@@ -876,6 +954,7 @@ namespace UnityEngine.UI
         /// </summary>
         /// <example>
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using System.Collections;
         /// using UnityEngine.UI; // Required when Using UI elements.
@@ -896,7 +975,8 @@ namespace UnityEngine.UI
         ///         }
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
         public bool multiLine { get { return m_LineType == LineType.MultiLineNewline || lineType == LineType.MultiLineSubmit; } }
 
@@ -908,6 +988,7 @@ namespace UnityEngine.UI
         /// </remarks>
         /// <example>
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using System.Collections;
         /// using UnityEngine.UI; // Required when Using UI elements.
@@ -922,7 +1003,8 @@ namespace UnityEngine.UI
         ///         mainInputField.asteriskChar = "$!£%&*"[0];
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
         public char asteriskChar { get { return m_AsteriskChar; } set { if (SetPropertyUtility.SetStruct(ref m_AsteriskChar, value)) UpdateLabel(); } }
 
@@ -1035,6 +1117,21 @@ namespace UnityEngine.UI
         }
 
     #endif // if UNITY_EDITOR
+
+    #if UNITY_ANDROID
+        protected override void Awake()
+        {
+            base.Awake();
+
+            if (s_IsQuestDeviceEvaluated)
+                return;
+
+            // Used for Oculus Quest 1 and 2 software keyboard regression.
+            // TouchScreenKeyboard.isInPlaceEditingAllowed is always returning true in these devices and would prevent the software keyboard from showing up if that value was used.
+            s_IsQuestDevice = SystemInfo.deviceModel == kOculusQuestDeviceModel;
+            s_IsQuestDeviceEvaluated = true;
+        }
+    #endif // if UNITY_ANDROID
 
         protected override void OnEnable()
         {
@@ -1152,6 +1249,7 @@ namespace UnityEngine.UI
         /// <example>
         /// //Create an Input Field by going to __Create__>__UI__>__Input Field__. Attach this script to the Input Field GameObject
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using UnityEngine.UI;
         ///
@@ -1174,7 +1272,8 @@ namespace UnityEngine.UI
         ///         }
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
         protected void OnFocus()
         {
@@ -1254,6 +1353,9 @@ namespace UnityEngine.UI
             switch (platform)
             {
                 case RuntimePlatform.Android:
+                    if (s_IsQuestDevice)
+                        return TouchScreenKeyboard.isSupported;
+
                     return !TouchScreenKeyboard.isInPlaceEditingAllowed;
                 default:
                     return TouchScreenKeyboard.isSupported;
@@ -1269,7 +1371,7 @@ namespace UnityEngine.UI
         // This currently only happens on Chrome OS devices (that support laptop and tablet mode).
         private bool InPlaceEditingChanged()
         {
-            return m_TouchKeyboardAllowsInPlaceEditing != TouchScreenKeyboard.isInPlaceEditingAllowed;
+            return !s_IsQuestDevice && m_TouchKeyboardAllowsInPlaceEditing != TouchScreenKeyboard.isInPlaceEditingAllowed;
         }
 
         void UpdateCaretFromKeyboard()
@@ -1350,6 +1452,8 @@ namespace UnityEngine.UI
 
                     if (m_Keyboard.status == TouchScreenKeyboard.Status.Canceled)
                         m_WasCanceled = true;
+                    else if (m_Keyboard.status == TouchScreenKeyboard.Status.Done)
+                        SendOnSubmit();
                 }
 
                 OnDeselect(null);
@@ -1384,6 +1488,7 @@ namespace UnityEngine.UI
                         {
                             m_Keyboard.text = m_Text;
 
+                            SendOnSubmit();
                             OnDeselect(null);
                             return;
                         }
@@ -1428,6 +1533,8 @@ namespace UnityEngine.UI
             {
                 if (m_Keyboard.status == TouchScreenKeyboard.Status.Canceled)
                     m_WasCanceled = true;
+                else if (m_Keyboard.status == TouchScreenKeyboard.Status.Done)
+                    SendOnSubmit();
 
                 OnDeselect(null);
             }
@@ -1894,6 +2001,9 @@ namespace UnityEngine.UI
                     var shouldContinue = KeyPressed(m_ProcessingEvent);
                     if (shouldContinue == EditState.Finish)
                     {
+                        if (!m_WasCanceled)
+                            SendOnSubmit();
+
                         DeactivateInputField();
                         break;
                     }
@@ -2177,7 +2287,7 @@ namespace UnityEngine.UI
             }
             else
             {
-                if (caretPositionInternal > 0)
+                if (caretPositionInternal > 0 && caretPositionInternal - 1 < text.Length)
                 {
                     m_Text = text.Remove(caretPositionInternal - 1, 1);
                     caretSelectPositionInternal = caretPositionInternal = caretPositionInternal - 1;
@@ -2232,13 +2342,23 @@ namespace UnityEngine.UI
         }
 
         /// <summary>
+        /// Convenience function to make functionality to send the ::ref::EndEditEvent easier.
+        /// </summary>
+        protected void SendOnEndEdit()
+        {
+            UISystemProfilerApi.AddMarker("InputField.onEndEdit", this);
+            if (onEndEdit != null)
+                onEndEdit.Invoke(m_Text);
+        }
+
+        /// <summary>
         /// Convenience function to make functionality to send the ::ref::SubmitEvent easier.
         /// </summary>
         protected void SendOnSubmit()
         {
             UISystemProfilerApi.AddMarker("InputField.onSubmit", this);
-            if (onEndEdit != null)
-                onEndEdit.Invoke(m_Text);
+            if (onSubmit != null)
+                onSubmit.Invoke(m_Text);
         }
 
         /// <summary>
@@ -2859,14 +2979,14 @@ namespace UnityEngine.UI
 
                 if (char.IsLetter(ch))
                 {
-                    // Character following a space should be in uppercase.
-                    if (char.IsLower(ch) && ((pos == 0) || (text[pos - 1] == ' ')))
+                    // Character following a space or a hyphen should be in uppercase.
+                    if (char.IsLower(ch) && ((pos == 0) || (text[pos - 1] == ' ') || (text[pos - 1] == '-')))
                     {
                         return char.ToUpper(ch);
                     }
 
-                    // Character not following a space or an apostrophe should be in lowercase.
-                    if (char.IsUpper(ch) && (pos > 0) && (text[pos - 1] != ' ') && (text[pos - 1] != '\''))
+                    // Character not following a space or an apostrophe or a hyphen should be in lowercase.
+                    if (char.IsUpper(ch) && (pos > 0) && (text[pos - 1] != ' ') && (text[pos - 1] != '\'') && (text[pos - 1] != '-'))
                     {
                         return char.ToLower(ch);
                     }
@@ -2879,18 +2999,18 @@ namespace UnityEngine.UI
                     // Don't allow more than one apostrophe
                     if (!text.Contains("'"))
                         // Don't allow consecutive spaces and apostrophes.
-                        if (!(((pos > 0) && ((text[pos - 1] == ' ') || (text[pos - 1] == '\''))) ||
-                              ((pos < text.Length) && ((text[pos] == ' ') || (text[pos] == '\'')))))
+                        if (!(((pos > 0) && ((text[pos - 1] == ' ') || (text[pos - 1] == '\'') || (text[pos - 1] == '-'))) ||
+                              ((pos < text.Length) && ((text[pos] == ' ') || (text[pos] == '\'') || (text[pos] == '-')))))
                             return ch;
                 }
 
-                if (ch == ' ')
+                if (ch == ' ' || ch == '-')
                 {
-                    if (pos != 0) // Don't allow leading spaces
+                    if (pos != 0) // Don't allow leading spaces and hyphens
                     {
-                        // Don't allow consecutive spaces and apostrophes.
-                        if (!(((pos > 0) && ((text[pos - 1] == ' ') || (text[pos - 1] == '\''))) ||
-                              ((pos < text.Length) && ((text[pos] == ' ') || (text[pos] == '\'')))))
+                        // Don't allow consecutive spaces, apostrophes and hyphens.
+                        if (!(((pos > 0) && ((text[pos - 1] == ' ') || (text[pos - 1] == '\'') || (text[pos - 1] == '-'))) ||
+                              ((pos < text.Length) && ((text[pos] == ' ') || (text[pos] == '\'') || (text[pos - 1] == '-')))))
                             return ch;
                     }
                 }
@@ -2928,6 +3048,7 @@ namespace UnityEngine.UI
         /// </remarks>
         /// <example>
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using System.Collections;
         /// using UnityEngine.UI;
@@ -2942,7 +3063,8 @@ namespace UnityEngine.UI
         ///         mainInputField.ActivateInputField();
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
         public void ActivateInputField()
         {
@@ -2972,7 +3094,7 @@ namespace UnityEngine.UI
             // Cache the value of isInPlaceEditingAllowed, because on UWP this involves calling into native code
             // Usually, the value only needs to be updated once when the TouchKeyboard is opened; however, on Chrome OS,
             // we check repeatedly to see if the in-place editing state has changed, so we can take action.
-            m_TouchKeyboardAllowsInPlaceEditing = TouchScreenKeyboard.isInPlaceEditingAllowed;
+            m_TouchKeyboardAllowsInPlaceEditing = !s_IsQuestDevice && TouchScreenKeyboard.isInPlaceEditingAllowed;
 
             if (TouchScreenKeyboardShouldBeUsed())
             {
@@ -3035,6 +3157,7 @@ namespace UnityEngine.UI
         /// </summary>
         /// <example>
         /// <code>
+        /// <![CDATA[
         /// using UnityEngine;
         /// using System.Collections;
         /// using UnityEngine.UI; // Required when Using UI elements.
@@ -3049,7 +3172,8 @@ namespace UnityEngine.UI
         ///         mainInputField.DeactivateInputField();
         ///     }
         /// }
-        /// </code>
+        /// ]]>
+        ///</code>
         /// </example>
         public void DeactivateInputField()
         {
@@ -3068,7 +3192,7 @@ namespace UnityEngine.UI
                 if (m_WasCanceled)
                     text = m_OriginalText;
 
-                SendOnSubmit();
+                SendOnEndEdit();
 
                 if (m_Keyboard != null)
                 {
