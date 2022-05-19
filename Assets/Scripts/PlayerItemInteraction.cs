@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerItemInteraction : MonoBehaviour
 {
 
-
+    public List<Sprite> slicedSprites;
     void OnCollisionEnter(Collision col)
     {
         if (FindChildByName(transform.gameObject, "handitem").transform.childCount == 0 && FindChildByName(col.gameObject, "Item").transform.childCount != 0 && Input.GetKey(KeyCode.Space))
@@ -19,6 +19,13 @@ public class PlayerItemInteraction : MonoBehaviour
             GameObject item = FindChildByName(transform.gameObject, "handitem").transform.GetChild(0).gameObject;
             item.transform.parent = FindChildByName(col.gameObject, "Item").transform;
             item.transform.localPosition = Vector3.zero;
+        }
+        else if (Input.GetKey(KeyCode.LeftControl) && FindChildByName(col.gameObject, "vagodeszka") != null && FindChildByName(col.gameObject, "Item").transform.childCount == 1 && FindChildByName(col.gameObject, "Item").transform.GetChild(0).tag == "Sliceable")
+        {
+            GameObject item = FindChildByName(col.gameObject, "Item").transform.GetChild(0).gameObject;
+            SpriteRenderer sr = item.transform.GetComponent<SpriteRenderer>();
+            sr.sprite = slicedSprites.Find(x => x.name == sr.sprite.name + "_sliced");
+            item.tag = "Sliced";
         }
     }
 
