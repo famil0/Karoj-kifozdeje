@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class PlayerItemInteraction : MonoBehaviour
 {
-
+    //Vector3 closestPoint = avoidanceObject.GetComponent<Collider>().ClosestPoint(target.transform.position);
+    public GameObject g;
+    private void Update()
+    {
+    }
     public List<Sprite> slicedSprites;
     void OnCollisionEnter(Collision col)
     {
+        g.transform.position = col.gameObject.GetComponent<Collider>().ClosestPoint(transform.position);
         if (FindChildByName(transform.gameObject, "handitem").transform.childCount == 0 && FindChildByName(col.gameObject, "Item").transform.childCount != 0 && Input.GetKey(KeyCode.Space))
         {
             GameObject item = FindChildByName(col.gameObject, "Item").transform.GetChild(0).gameObject;
