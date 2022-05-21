@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerItemInteraction : MonoBehaviour
 {
-    //Vector3 closestPoint = avoidanceObject.GetComponent<Collider>().ClosestPoint(target.transform.position);
-    //public GameObject g;
     private bool isSpaceDown = false;
     private bool isCtrlDown = false;
     public GameObject target;
@@ -20,11 +18,6 @@ public class PlayerItemInteraction : MonoBehaviour
         {
             isCtrlDown = true;
         }
-        //else
-        //{
-        //    isSpaceDown = false;
-        //    isCtrlDown = false;
-        //}
     }
     public List<Sprite> slicedSprites;
     void OnTriggerStay(Collider col)
@@ -83,10 +76,15 @@ public class PlayerItemInteraction : MonoBehaviour
                     FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/onion_soup");
                     ResetOven(fazek);
                 }
-                
+                else if (tomatoes == 1 && onions == 1 && carrots == 1)
+                {
+                    FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/vegy_soup");
+                    ResetOven(fazek);
+                }
 
-                
-                
+
+
+
             }
         }
         //slice
