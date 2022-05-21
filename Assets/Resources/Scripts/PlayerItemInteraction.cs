@@ -31,13 +31,15 @@ public class PlayerItemInteraction : MonoBehaviour
         if (isSpaceDown)
         {
             isSpaceDown = false;
-            //place down items
+            //pick up items
             if (FindChildByName(transform.parent.gameObject, "handitem").transform.childCount == 0 && FindChildByName(col.gameObject, "Item").transform.childCount != 0)
             {
                 GameObject item = FindChildByName(col.gameObject, "Item").transform.GetChild(0).gameObject;
+                if (item.tag == "Slicing") return;
                 item.transform.parent = FindChildByName(transform.parent.gameObject, "handitem").transform;
                 item.transform.localPosition = new Vector3(0, 0, item.transform.position.z);
             }
+            //place down items
             else if (FindChildByName(transform.parent.gameObject, "handitem").transform.childCount == 1 && FindChildByName(col.gameObject, "Item").transform.childCount == 0)
             {
                 GameObject item = FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).gameObject;
@@ -88,17 +90,15 @@ public class PlayerItemInteraction : MonoBehaviour
             }
         }
         //slice
-        else if (isCtrlDown && FindChildByName(col.gameObject, "vagodeszka") != null && FindChildByName(col.gameObject, "Item").transform.childCount == 1 && FindChildByName(col.gameObject, "Item").transform.GetChild(0).tag == "Sliceable")
+        else if (isCtrlDown && col.gameObject.tag is "Vagodeszka" /*&& FindChildByName(col.gameObject, "Item").transform.childCount == 1*/ /*&& FindChildByName(col.gameObject, "Item").transform.GetChild(0).tag == "Sliceable"*/)
         {
             isCtrlDown = false;
-            GameObject item = FindChildByName(col.gameObject, "Item").transform.GetChild(0).gameObject;
-            SpriteRenderer sr = item.transform.GetComponent<SpriteRenderer>();
-            sr.sprite = slicedSprites.Find(x => x.name == sr.sprite.name + "_sliced");
-            item.tag = "Sliced";
+            GameObject vagodeszka = col.gameObject;
+            vagodeszka.GetComponent<Vagodeszka>().canSlice = true;
         }
 
-        
-        
+
+
     }
 
     private void OnTriggerExit(Collider other)
