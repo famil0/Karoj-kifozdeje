@@ -108,9 +108,12 @@ public class PlayerItemInteraction : MonoBehaviour
 
     void ResetOven(GameObject fazek)
     {
-        GameObject newGO = Instantiate(Resources.Load("Prefabs/oven")) as GameObject;
-        newGO.transform.position = fazek.transform.parent.gameObject.transform.parent.gameObject.transform.position;
-        Destroy(fazek.transform.parent.gameObject.transform.parent.gameObject);
+        GameObject newGO = Instantiate(Resources.Load("Prefabs/fazek")) as GameObject;
+        newGO.transform.position = fazek.transform.position;
+        newGO.transform.parent = fazek.transform.parent;
+        newGO.transform.localScale = fazek.transform.localScale;
+        newGO.name = $"{newGO.name.Split("(")[0]}";
+        Destroy(fazek);
     }
 
     public GameObject FindChildByName(GameObject parentGameObject, string name)

@@ -16,7 +16,7 @@ public class Vagodeszka : MonoBehaviour
     {
         statusBar = transform.GetChild(3).gameObject;
         statusBar.SetActive(false);
-        reqTimeToSlice = 6;
+        reqTimeToSlice = 2.5f;
         elapsedTime = -0.001f;
     }
 
@@ -53,7 +53,6 @@ public class Vagodeszka : MonoBehaviour
         if (statusBarFg.transform.localScale.x >= 1)
         {
             sliced = true;
-            Debug.Log($"Images/{item.GetComponent<SpriteRenderer>().sprite.name}_sliced");
             item.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Images/{item.GetComponent<SpriteRenderer>().sprite.name}_sliced");
             item.tag = "Sliced";
             ResetVagodeszka(transform.gameObject);

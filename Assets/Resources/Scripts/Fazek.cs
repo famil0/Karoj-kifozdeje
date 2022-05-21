@@ -12,6 +12,7 @@ public class Fazek : MonoBehaviour
     public float elapsedTime;
     public bool cooked = false;
     public bool cooking = false;
+    public bool canCook = false;
     public Animator anim;
 
     private void Start()
@@ -29,14 +30,28 @@ public class Fazek : MonoBehaviour
         if (items.Count > 0)
         {
             reqTimeToCook = items.Count * 10;
-            if (!cooked)
+            if (canCook && cooked is false)
             {
                 Cook();
             }
         }
 
-        if (transform.parent.gameObject.transform.parent.gameObject.tag == "Oven" && items.Count > 0) cooking = true;
-        else cooking = false;
+        if (transform.parent.gameObject.transform.parent.gameObject.tag == "Oven")
+        {
+            canCook = true;
+            if (items.Count > 0)
+            {
+                cooking = true;
+            }
+            else
+            {
+                cooking = false;
+            }
+        }
+        else
+        {
+            canCook = false;
+        }
 
         if ((cooked && cooking) || (elapsedTime >= reqTimeToCook && cooking))
         {
@@ -47,13 +62,18 @@ public class Fazek : MonoBehaviour
             anim.SetTrigger("NoWarning");
         }
 
-        if (cooking)
+        if (canCook && cooking)
         {
             transform.parent.transform.parent.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/oven_cooking");
         }
         else if (transform.parent.transform.parent.tag == "Oven")
         {
             transform.parent.transform.parent.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/ovenv2");
+        }
+
+        if (canCook is false)
+        {
+            cooking = false;
         }
     }
 
