@@ -16,7 +16,7 @@ public class Vagodeszka : MonoBehaviour
     {
         statusBar = transform.GetChild(3).gameObject;
         statusBar.SetActive(false);
-        reqTimeToSlice = 2.5f;
+        reqTimeToSlice = 1.8f;
         elapsedTime = -0.001f;
     }
 

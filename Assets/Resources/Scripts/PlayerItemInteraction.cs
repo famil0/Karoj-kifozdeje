@@ -4,22 +4,28 @@ using UnityEngine;
 
 public class PlayerItemInteraction : MonoBehaviour
 {
-    private bool isSpaceDown = false;
-    private bool isCtrlDown = false;
+    public bool isSpaceDown = false;
+    public bool isCtrlDown = false;
+    public bool canInteract = false;
     public GameObject target;
     private void Update()
     {
-        
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (canInteract)
         {
-            isSpaceDown = true;
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("joy A button"))
+            {
+                isSpaceDown = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetButtonDown("joy X button"))
+            {
+                isCtrlDown = true;
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            isCtrlDown = true;
-        }
+
     }
-    public List<Sprite> slicedSprites;
+
+    
+
     void OnTriggerStay(Collider col)
     {
         
@@ -97,13 +103,17 @@ public class PlayerItemInteraction : MonoBehaviour
             vagodeszka.GetComponent<Vagodeszka>().canSlice = true;
         }
 
+    }
 
-
+    private void OnTriggerEnter(Collider other)
+    {
+        canInteract = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
         target.transform.gameObject.SetActive(false);
+        canInteract = false;
     }
 
     void ResetOven(GameObject fazek)
