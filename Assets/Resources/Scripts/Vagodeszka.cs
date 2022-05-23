@@ -7,14 +7,15 @@ public class Vagodeszka : MonoBehaviour
     public GameObject statusBar;
     public float reqTimeToSlice;
     public float elapsedTime;
-    public bool sliced = false;
-    public bool slicing = false;
+    public bool sliced;
+    public bool slicing;
     public GameObject item;
-    public bool canSlice = false;
+    public bool canSlice;
 
     void Start()
     {
         statusBar = transform.GetChild(3).gameObject;
+        
         SetVariables();
     }
 
@@ -23,6 +24,9 @@ public class Vagodeszka : MonoBehaviour
         statusBar.SetActive(false);
         reqTimeToSlice = 1.8f;
         elapsedTime = -0.001f;
+        sliced = false;
+        slicing = false;
+        canSlice = false;
     }
 
     void Update()
@@ -35,8 +39,8 @@ public class Vagodeszka : MonoBehaviour
         if (canSlice && sliced is false)
         {
             slicing = true;
-            Slice();
             item.tag = "Slicing";
+            Slice();
         }
         else
         {
@@ -63,7 +67,7 @@ public class Vagodeszka : MonoBehaviour
             sliced = true;
             item.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Images/{item.GetComponent<SpriteRenderer>().sprite.name}_sliced");
             item.tag = "Sliced";
-            ResetVagodeszka(transform.gameObject);
+            ResetVagodeszka();
         }
         else if (statusBarFg.transform.localScale.x >= 1)
         {
@@ -76,20 +80,12 @@ public class Vagodeszka : MonoBehaviour
 
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         canSlice = false;
     }
 
-    //void ResetVagodeszka(GameObject vago)
-    //{
-    //    GameObject newGO = Instantiate(vago);
-    //    newGO.transform.position = vago.transform.position;
-    //    newGO.name = $"{newGO.name.Split("(")[0]}";
-    //    Destroy(vago);
-    //}
-
-    void ResetVagodeszka(GameObject vago)
+    void ResetVagodeszka()
     {
         SetVariables();
     }
