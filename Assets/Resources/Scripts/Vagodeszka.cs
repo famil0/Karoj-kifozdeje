@@ -38,8 +38,11 @@ public class Vagodeszka : MonoBehaviour
             slicing = false;         
         }
 
-        if (item.tag == "Sliceable") sliced = false;
-        else if (item.tag == "Sliced") sliced = true;
+        if (item is not null)
+        {
+            if (item.tag == "Sliceable") sliced = false;
+            else if (item.tag == "Sliced") sliced = true;
+        }
 
         
     }
