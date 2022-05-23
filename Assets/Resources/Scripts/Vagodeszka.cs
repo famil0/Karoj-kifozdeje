@@ -15,6 +15,11 @@ public class Vagodeszka : MonoBehaviour
     void Start()
     {
         statusBar = transform.GetChild(3).gameObject;
+        SetVariables();
+    }
+
+    void SetVariables()
+    {
         statusBar.SetActive(false);
         reqTimeToSlice = 1.8f;
         elapsedTime = -0.001f;
@@ -76,11 +81,16 @@ public class Vagodeszka : MonoBehaviour
         canSlice = false;
     }
 
+    //void ResetVagodeszka(GameObject vago)
+    //{
+    //    GameObject newGO = Instantiate(vago);
+    //    newGO.transform.position = vago.transform.position;
+    //    newGO.name = $"{newGO.name.Split("(")[0]}";
+    //    Destroy(vago);
+    //}
+
     void ResetVagodeszka(GameObject vago)
     {
-        GameObject newGO = Instantiate(vago);
-        newGO.transform.position = vago.transform.position;
-        newGO.name = $"{newGO.name.Split("(")[0]}";
-        Destroy(vago);
+        SetVariables();
     }
 }

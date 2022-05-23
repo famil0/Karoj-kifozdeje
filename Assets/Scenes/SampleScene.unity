@@ -463,10 +463,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d513a04b04f76a148b170ab763d5e8d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSpaceDown: 0
-  isCtrlDown: 0
-  canInteract: 0
   target: {fileID: 909026685}
+  spaceDown: 0
+  ctrlDown: 0
+  canInteract: 0
 --- !u!50 &374794785
 Rigidbody2D:
   serializedVersion: 4
@@ -485,7 +485,7 @@ Rigidbody2D:
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!61 &374794786
@@ -2204,7 +2204,7 @@ Rigidbody2D:
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!1001 &1500162965

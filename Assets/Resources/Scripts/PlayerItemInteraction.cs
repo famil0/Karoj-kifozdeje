@@ -4,56 +4,60 @@ using UnityEngine;
 
 public class PlayerItemInteraction : MonoBehaviour
 {
-    public bool isSpaceDown = false;
-    public bool isCtrlDown = false;
-    public bool canInteract = false;
     public GameObject target;
+    public bool spaceDown = false;
+    public bool ctrlDown = false;
+    public bool canInteract = false;
+
     private void Update()
     {
-        if (canInteract)
+        //Debug.Log(Time.deltaTime + " " + Time.fixedDeltaTime);
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("joy A button"))
         {
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("joy A button"))
-            {
-                isSpaceDown = true;
-            }
-            else if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetButtonDown("joy X button"))
-            {
-                isCtrlDown = true;
-            }
+            spaceDown = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftControl) || Input.GetButtonDown("joy X button"))
+        {
+            ctrlDown = true;
         }
 
+        if (canInteract is false)
+        {
+            ctrlDown = false;
+            spaceDown = false;
+        }
     }
 
-    
 
-    void OnTriggerStay(Collider col)
+    void OnTriggerStay2D(Collider2D col)
     {
-        
         if (col.name == "Karoj")
         {
             return;
         }
-        target.transform.gameObject.SetActive(true);
-        if (isSpaceDown)
+        if (spaceDown)
         {
-            isSpaceDown = false;
+            spaceDown = false;
             //pick up items
             if (FindChildByName(transform.parent.gameObject, "handitem").transform.childCount == 0 && FindChildByName(col.gameObject, "Item").transform.childCount != 0)
             {
-                GameObject item = FindChildByName(col.gameObject, "Item").transform.GetChild(0).gameObject;
-                if (item.tag == "Slicing") return;
-                item.transform.parent = FindChildByName(transform.parent.gameObject, "handitem").transform;
-                item.transform.localPosition = new Vector3(0, 0, item.transform.position.z);
+                //if (FindChildByName(col.gameObject, "Item").transform.childCount > 0)
+                //{
+                    GameObject item = FindChildByName(col.gameObject, "Item").transform.GetChild(0).gameObject;
+                    if (item.tag == "Slicing") return;
+                    item.transform.parent = FindChildByName(transform.parent.gameObject, "handitem").transform;
+                    item.transform.localPosition = new Vector3(0, 0, item.transform.position.z);
+                //}
             }
             //place down items
-            else if (FindChildByName(transform.parent.gameObject, "handitem").transform.childCount == 1 && FindChildByName(col.gameObject, "Item").transform.childCount == 0)
+            else if (FindChildByName(transform.parent.gameObject, "handitem").transform.childCount is 1 && FindChildByName(col.gameObject, "Item").transform.childCount is 0)
             {
                 GameObject item = FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).gameObject;
                 item.transform.parent = FindChildByName(col.gameObject, "Item").transform;
                 item.transform.localPosition = Vector3.zero;
             }
             //put items into cooking pot
-            if (FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).tag == "Sliced" && !FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").transform.GetComponent<Fazek>().isFull)
+            if (FindChildByName(transform.parent.gameObject, "handitem").transform.childCount > 0 && FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).tag == "Sliced" && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") is not null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").transform.GetComponent<Fazek>().isFull is false)
             {
                 GameObject cookingPot = FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").gameObject;
                 GameObject item = FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).gameObject;
@@ -96,24 +100,29 @@ public class PlayerItemInteraction : MonoBehaviour
             }
         }
         //slice
-        else if (isCtrlDown && col.gameObject.tag is "Vagodeszka" /*&& FindChildByName(col.gameObject, "Item").transform.childCount == 1*/ /*&& FindChildByName(col.gameObject, "Item").transform.GetChild(0).tag == "Sliceable"*/)
+        else if (ctrlDown && col.gameObject.tag is "Vagodeszka" /*&& FindChildByName(col.gameObject, "Item").transform.childCount == 1*/ /*&& FindChildByName(col.gameObject, "Item").transform.GetChild(0).tag == "Sliceable"*/)
         {
-            isCtrlDown = false;
+            ctrlDown = false;
             GameObject vagodeszka = col.gameObject;
             vagodeszka.GetComponent<Vagodeszka>().canSlice = true;
         }
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D col)
     {
+        if (col.name == "Karoj")
+        {
+            return;
+        }
+        target.transform.gameObject.SetActive(true);
         canInteract = true;
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D col)
     {
-        target.transform.gameObject.SetActive(false);
         canInteract = false;
+        target.transform.gameObject.SetActive(false);
     }
 
     void ResetOven(GameObject fazek)
