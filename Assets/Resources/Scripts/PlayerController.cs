@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     public Vector2 facingDir;
     public Animator anim;
     public GameObject cam;
-    Rigidbody rb;
+    Rigidbody2D rb;
     public GameObject itemDetection;
     public bool isMoving = false;
     
@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     {
         sr = GetComponentInChildren<SpriteRenderer>();
         moveDir = new Vector2(0, -1);
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
