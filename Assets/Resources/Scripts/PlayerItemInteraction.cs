@@ -38,7 +38,6 @@ public class PlayerItemInteraction : MonoBehaviour
         if (spaceDown)
         {
             spaceDown = false;
-            Debug.Log(FindChildByName(transform.parent.gameObject, "handitem").transform.childCount + " " + FindChildByName(col.gameObject, "Item").transform.childCount);
             //pick up items
             if (FindChildByName(transform.parent.gameObject, "handitem").transform.childCount is 0 && FindChildByName(col.gameObject, "Item").transform.childCount is not 0)
             {

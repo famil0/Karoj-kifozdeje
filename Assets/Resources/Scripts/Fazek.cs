@@ -90,8 +90,11 @@ public class Fazek : MonoBehaviour
             cooking = false;
         }
 
-        Debug.Log(Camera.main.ViewportToWorldPoint(Input.mousePosition));
-        if (Camera.main.ScreenToWorldPoint(Input.mousePosition) == transform.position)
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Debug.Log(mousePos + "\t" + transform.position);
+        float offset = 0.3f;
+        if (transform.position.x - offset <= mousePos.x && transform.position.x + offset >= mousePos.x &&
+            transform.position.y - offset <= mousePos.y && transform.position.y + offset >= mousePos.y)
         {
             showItems = true;
         }
