@@ -31,13 +31,14 @@ public class PlayerItemInteraction : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D col)
     {
-        if (col.name == "Karoj")
+        if (col.name is "Karoj")
         {
             return;
         }
         if (spaceDown)
         {
             spaceDown = false;
+            Debug.Log(FindChildByName(transform.parent.gameObject, "handitem").transform.childCount + " " + FindChildByName(col.gameObject, "Item").transform.childCount);
             //pick up items
             if (FindChildByName(transform.parent.gameObject, "handitem").transform.childCount is 0 && FindChildByName(col.gameObject, "Item").transform.childCount is not 0)
             {
@@ -127,12 +128,14 @@ public class PlayerItemInteraction : MonoBehaviour
 
     void ResetOven(GameObject fazek)
     {
-        GameObject newGO = Instantiate(Resources.Load("Prefabs/fazek")) as GameObject;
-        newGO.transform.position = fazek.transform.position;
-        newGO.transform.parent = fazek.transform.parent;
-        newGO.transform.localScale = fazek.transform.localScale;
-        newGO.name = $"{newGO.name.Split("(")[0]}";
-        Destroy(fazek);
+        //GameObject newGO = Instantiate(Resources.Load("Prefabs/fazek")) as GameObject;
+        //newGO.transform.position = fazek.transform.position;
+        //newGO.transform.parent = fazek.transform.parent;
+        //newGO.transform.localScale = fazek.transform.localScale;
+        //newGO.name = $"{newGO.name.Split("(")[0]}";
+        //Destroy(fazek);
+
+        fazek.GetComponent<Fazek>().SetVariables();
     }
 
     public GameObject FindChildByName(GameObject parentGameObject, string name)

@@ -5,22 +5,36 @@ using UnityEngine;
 public class Fazek : MonoBehaviour
 {
     public List<GameObject> items = new List<GameObject>();
-    public bool isFull = false;
+    public bool isFull;
     public bool showItems = false;
     public GameObject statusBar;
     public float reqTimeToCook;
     public float elapsedTime;
-    public bool cooked = false;
-    public bool cooking = false;
-    public bool canCook = false;
+    public bool cooked;
+    public bool cooking;
+    public bool canCook;
     public Animator anim;
 
     private void Start()
     {
         statusBar = transform.GetChild(1).gameObject;
+        SetVariables();
+    }
+
+    public void SetVariables()
+    {
+        items.Clear();
+        isFull = false;
+        foreach (Transform item in transform.GetChild(0))
+        {
+            Destroy(item.gameObject);
+        }
         statusBar.SetActive(false);
         reqTimeToCook = 0;
         elapsedTime = -0.001f;
+        cooked = false;
+        cooking = false;
+        canCook = false;
     }
 
     void Update()
@@ -75,6 +89,13 @@ public class Fazek : MonoBehaviour
         {
             cooking = false;
         }
+
+        Debug.Log(Camera.main.ViewportToWorldPoint(Input.mousePosition));
+        if (Camera.main.ScreenToWorldPoint(Input.mousePosition) == transform.position)
+        {
+            showItems = true;
+        }
+        else showItems = false;
     }
 
     public void Cook()

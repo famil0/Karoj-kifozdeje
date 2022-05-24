@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 7305091010959680581}
   - component: {fileID: 7305091010959680580}
   - component: {fileID: 7305091010959680578}
-  - component: {fileID: 7305091010959680579}
+  - component: {fileID: 5290114379506780780}
   m_Layer: 0
   m_Name: fazek
   m_TagString: Untagged
@@ -214,8 +214,9 @@ MonoBehaviour:
   elapsedTime: 0
   cooked: 0
   cooking: 0
+  canCook: 0
   anim: {fileID: 4649765373117135094}
---- !u!61 &7305091010959680579
+--- !u!61 &5290114379506780780
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -225,7 +226,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

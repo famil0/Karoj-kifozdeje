@@ -151,6 +151,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8245742969833354561}
     m_Modifications:
+    - target: {fileID: 5290114379506780780, guid: 5e794824d5f760643bb35e5fc3b10505, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7305091010959680579, guid: 5e794824d5f760643bb35e5fc3b10505, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7305091010959680581, guid: 5e794824d5f760643bb35e5fc3b10505, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -199,7 +207,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: fazek
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5290114379506780780, guid: 5e794824d5f760643bb35e5fc3b10505, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5e794824d5f760643bb35e5fc3b10505, type: 3}
 --- !u!4 &8245742971209314249 stripped
 Transform:
