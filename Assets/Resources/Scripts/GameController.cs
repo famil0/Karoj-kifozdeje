@@ -24,7 +24,7 @@ public class GameController : MonoBehaviour
         recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/tomato_soup").gameObject, new List<GameObject>() { Resources.Load<GameObject>("Prefabs/Ingredients/tomato").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/tomato").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/tomato").gameObject });
         recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/onion_soup").gameObject, new List<GameObject>() { Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject });
         recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/vegy_soup").gameObject, new List<GameObject>() { Resources.Load<GameObject>("Prefabs/Ingredients/tomato").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/carrot").gameObject });
-
+                
         NewOrder();
     }
 
@@ -37,15 +37,18 @@ public class GameController : MonoBehaviour
 
         PointDigits.GetComponent<Digits>().SetDigits(points);
         TimeDigits.GetComponent<Digits>().SetDigits(int.Parse((usableTime - time).ToString().Split(",")[0]));
+
+        
     }
 
     public void NewOrder()
     {
         System.Random r = new System.Random();
-        GameObject order = Instantiate(Resources.Load<GameObject>("Prefabs/Order"), Camera.main.transform.position - new Vector3(6, -3.4f, -1), Camera.main.transform.localRotation);
-        order.transform.parent = Camera.main.transform;
+        GameObject order = Instantiate(Resources.Load<GameObject>("Prefabs/Order"));
+        order.transform.parent = Camera.main.transform.Find("Orders");
+        order.transform.localPosition = new Vector3(0, 0.7f + Camera.main.transform.Find("Orders").childCount * -0.55f, 0);
         GameObject food = recipes.ElementAt(r.Next(0, recipes.Count)).Key;
-        GameObject ingredients = order.transform.Find("Ingredients").gameObject;
+        GameObject ingredients = order.transform.Find("Animation").Find("Ingredients").gameObject;
         float size = 2.8f;
         float offset = 0.3f;
         for (int i = 0; i < recipes[food].Count; i++)
@@ -57,7 +60,7 @@ public class GameController : MonoBehaviour
 
 
         food = Instantiate(food).gameObject;
-        food.transform.parent = order.transform.Find("Food").transform;
+        food.transform.parent = order.transform.Find("Animation").Find("Food").transform;
         food.transform.localPosition = new Vector3(0, 0, -0.1f);
         food.transform.localScale = new Vector3(size, size, 1);
         food.name = food.name.Split("(")[0];

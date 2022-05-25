@@ -11,7 +11,7 @@ public class Order : MonoBehaviour
 
     private void Start()
     {
-        statusBar = transform.Find("StatusBar").gameObject;
+        statusBar = transform.Find("Animation").Find("StatusBar").gameObject;
         timeToFinish = 90;
     }
 
@@ -23,7 +23,6 @@ public class Order : MonoBehaviour
 
         GameObject statusBarFg = statusBar.transform.GetChild(0).GetChild(0).gameObject;
         statusBarFg.transform.localScale = new Vector3(1 - elapsedTime / timeToFinish, 1, 1);
-
-        
+        anim.enabled = false;
     }
 }
