@@ -66,7 +66,7 @@ public class PlayerItemInteraction : MonoBehaviour
                 item.transform.localPosition = new Vector3(-0.6f + cookingPot.GetComponent<Fazek>().items.Count * 0.3f, 0, -2.1f);
             }
             //soup to plate            
-            else if (FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") != null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<Fazek>().cooked && FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).name == "plate")
+            else if (FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") != null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<Fazek>().cooked && FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).tag == "Clean")
             {
                 GameObject fazek = FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek");
                 int tomatoes = 0, potatoes = 0, onions = 0, carrots = 0;
@@ -100,11 +100,19 @@ public class PlayerItemInteraction : MonoBehaviour
             }
         }
         //slice
-        else if (ctrlDown && col.gameObject.tag is "Vagodeszka" /*&& FindChildByName(col.gameObject, "Item").transform.childCount == 1*/ /*&& FindChildByName(col.gameObject, "Item").transform.GetChild(0).tag == "Sliceable"*/)
+        else if (ctrlDown && col.gameObject.tag is "Vagodeszka")
         {
             ctrlDown = false;
             GameObject vagodeszka = col.gameObject;
             vagodeszka.GetComponent<Vagodeszka>().canSlice = true;
+        }
+
+        //wash
+        else if (ctrlDown && col.gameObject.tag is "Sink")
+        {
+            ctrlDown = false;
+            GameObject sink = col.gameObject;
+            sink.GetComponent<Sink>().canWash = true;
         }
 
     }
