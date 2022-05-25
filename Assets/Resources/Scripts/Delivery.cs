@@ -5,12 +5,6 @@ using UnityEngine;
 public class Delivery : MonoBehaviour
 {
     public GameObject item;
-    public GameObject Points;
-
-    private void Start()
-    {
-        Points = GameObject.Find("Points");
-    }
 
     void OnTriggerStay2D(Collider2D col)
     {
@@ -28,7 +22,7 @@ public class Delivery : MonoBehaviour
         {
             item.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/plate_dirty");
             item.tag = "Dirty";
-            Points.GetComponent<Points>().AddPoints(10);
+            GameObject.Find("GameController").GetComponent<GameController>().points += 10;
         }
     }
 

@@ -14,7 +14,7 @@ public class Sink : MonoBehaviour
 
     void Start()
     {
-        statusBar = transform.GetChild(1).gameObject;
+        statusBar = transform.Find("StatusBar").gameObject;
 
         SetVariables();
     }

@@ -59,11 +59,12 @@ public class PlayerItemInteraction : MonoBehaviour
             //put items into cooking pot
             if (FindChildByName(transform.parent.gameObject, "handitem").transform.childCount > 0 && FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).tag == "Sliced" && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") is not null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").transform.GetComponent<Fazek>().isFull is false)
             {
+                float offset = 0.3f;
                 GameObject cookingPot = FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").gameObject;
                 GameObject item = FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).gameObject;
                 cookingPot.GetComponent<Fazek>().items.Add(item.gameObject);
                 item.transform.parent = FindChildByName(cookingPot.gameObject, "Items").transform;
-                item.transform.localPosition = new Vector3(-0.6f + cookingPot.GetComponent<Fazek>().items.Count * 0.3f, 0, -2.1f);
+                item.transform.localPosition = new Vector3(-2 * offset + cookingPot.GetComponent<Fazek>().items.Count * offset, 0, -2.1f);
             }
             //soup to plate            
             else if (FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") != null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<Fazek>().cooked && FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).tag == "Clean")
@@ -82,20 +83,22 @@ public class PlayerItemInteraction : MonoBehaviour
                 if (tomatoes == 3)
                 {
                     FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/tomato_soup");
+                    plate.tag = "Soup";
                     ResetOven(fazek);
                 }
                 else if (onions == 3)
                 {
                     FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/onion_soup");
+                    plate.tag = "Soup";
                     ResetOven(fazek);
                 }
                 else if (tomatoes == 1 && onions == 1 && carrots == 1)
                 {
                     FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/vegy_soup");
+                    plate.tag = "Soup";
                     ResetOven(fazek);
                 }
 
-                plate.tag = "Soup";
 
 
             }
@@ -136,13 +139,6 @@ public class PlayerItemInteraction : MonoBehaviour
 
     void ResetOven(GameObject fazek)
     {
-        //GameObject newGO = Instantiate(Resources.Load("Prefabs/fazek")) as GameObject;
-        //newGO.transform.position = fazek.transform.position;
-        //newGO.transform.parent = fazek.transform.parent;
-        //newGO.transform.localScale = fazek.transform.localScale;
-        //newGO.name = $"{newGO.name.Split("(")[0]}";
-        //Destroy(fazek);
-
         fazek.GetComponent<Fazek>().SetVariables();
     }
 
