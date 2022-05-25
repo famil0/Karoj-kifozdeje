@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 7653046966915873516}
   - component: {fileID: 2633081933191044504}
   m_Layer: 0
-  m_Name: leado
+  m_Name: delivery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

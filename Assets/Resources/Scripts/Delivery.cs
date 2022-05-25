@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Leado : MonoBehaviour
+public class Delivery : MonoBehaviour
 {
     public GameObject item;
-    void Start()
+    public GameObject Points;
+
+    private void Start()
     {
-        
+        Points = GameObject.Find("Points");
     }
 
     void OnTriggerStay2D(Collider2D col)
@@ -26,6 +28,7 @@ public class Leado : MonoBehaviour
         {
             item.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/plate_dirty");
             item.tag = "Dirty";
+            Points.GetComponent<Points>().AddPoints(10);
         }
     }
 
