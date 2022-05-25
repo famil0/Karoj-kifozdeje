@@ -13,6 +13,7 @@ TagManager:
   - Clean
   - Dirty
   - Washing
+  - Soup
   layers:
   - Default
   - TransparentFX

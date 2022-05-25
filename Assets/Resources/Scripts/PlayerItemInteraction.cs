@@ -69,6 +69,7 @@ public class PlayerItemInteraction : MonoBehaviour
             else if (FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") != null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<Fazek>().cooked && FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).tag == "Clean")
             {
                 GameObject fazek = FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek");
+                GameObject plate = FindChildByName(FindChildByName(transform.parent.transform.gameObject, "handitem"), "plate").gameObject;
                 int tomatoes = 0, potatoes = 0, onions = 0, carrots = 0;
                 foreach (var item in fazek.GetComponent<Fazek>().items)
                 {
@@ -94,7 +95,7 @@ public class PlayerItemInteraction : MonoBehaviour
                     ResetOven(fazek);
                 }
 
-
+                plate.tag = "Soup";
 
 
             }
