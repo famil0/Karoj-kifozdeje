@@ -312,6 +312,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5975778077712603003, guid: 3419dea97b240c140860b18bab690426, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 174a004b13194a244964f1e5b0ddb109, type: 3}
+    - target: {fileID: 5975778077712603003, guid: 3419dea97b240c140860b18bab690426, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6789541247271430647, guid: 3419dea97b240c140860b18bab690426, type: 3}
       propertyPath: m_Name
       value: cupboard
