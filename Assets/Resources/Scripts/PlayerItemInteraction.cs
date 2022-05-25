@@ -44,7 +44,7 @@ public class PlayerItemInteraction : MonoBehaviour
                 //if (FindChildByName(col.gameObject, "Item").transform.childCount > 0)
                 //{
                     GameObject item = FindChildByName(col.gameObject, "Item").transform.GetChild(0).gameObject;
-                    if (item.tag == "Slicing") return;
+                    if (item.tag == "Slicing" || item.tag == "Washing") return;
                     item.transform.parent = FindChildByName(transform.parent.gameObject, "handitem").transform;
                     item.transform.localPosition = new Vector3(0, 0, item.transform.position.z);
                 //}
