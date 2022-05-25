@@ -67,7 +67,7 @@ public class Vagodeszka : MonoBehaviour
             sliced = true;
             item.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Images/{item.GetComponent<SpriteRenderer>().sprite.name}_sliced");
             item.tag = "Sliced";
-            ResetVagodeszka();
+            SetVariables();
         }
         else if (statusBarFg.transform.localScale.x >= 1)
         {
@@ -83,10 +83,5 @@ public class Vagodeszka : MonoBehaviour
     private void OnTriggerExit2D(Collider2D other)
     {
         canSlice = false;
-    }
-
-    void ResetVagodeszka()
-    {
-        SetVariables();
     }
 }

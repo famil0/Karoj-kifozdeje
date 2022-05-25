@@ -82,7 +82,7 @@ public class Fazek : MonoBehaviour
         }
         else if (transform.parent.transform.parent.tag == "Oven")
         {
-            transform.parent.transform.parent.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/ovenv2");
+            transform.parent.transform.parent.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/oven");
         }
 
         if (canCook is false)
@@ -90,8 +90,10 @@ public class Fazek : MonoBehaviour
             cooking = false;
         }
 
-        Debug.Log(Camera.main.ViewportToWorldPoint(Input.mousePosition));
-        if (Camera.main.ScreenToWorldPoint(Input.mousePosition) == transform.position)
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        float offset = 0.3f;
+        if (transform.position.x - offset <= mousePos.x && transform.position.x + offset >= mousePos.x &&
+            transform.position.y - offset <= mousePos.y && transform.position.y + offset >= mousePos.y)
         {
             showItems = true;
         }

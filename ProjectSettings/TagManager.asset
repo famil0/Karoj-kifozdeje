@@ -9,6 +9,11 @@ TagManager:
   - Oven
   - Vagodeszka
   - Slicing
+  - Sink
+  - Clean
+  - Dirty
+  - Washing
+  - Soup
   layers:
   - Default
   - TransparentFX
