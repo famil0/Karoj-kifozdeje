@@ -27,6 +27,11 @@ public class GameController : MonoBehaviour
         recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/vegy_soup").gameObject, new List<GameObject>() { Resources.Load<GameObject>("Prefabs/Ingredients/tomato").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/carrot").gameObject });
                 
         orders.Add(NewOrder());
+        orders.Add(NewOrder());
+        orders.Add(NewOrder());
+        orders.Add(NewOrder());
+        orders.Add(NewOrder());
+        orders.Add(NewOrder());
     }
 
     void Update()
