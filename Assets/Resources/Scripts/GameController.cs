@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
         }
 
         PointDigits.GetComponent<Digits>().SetDigits(points);
-        TimeDigits.GetComponent<Digits>().SetDigits(int.Parse((usableTime - time).ToString().Split(",")[0]));
+        TimeDigits.GetComponent<Digits>().SetDigits(int.Parse(Math.Floor(usableTime - time).ToString()));
 
         
     }

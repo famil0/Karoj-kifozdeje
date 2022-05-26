@@ -23,6 +23,6 @@ public class Order : MonoBehaviour
 
         GameObject statusBarFg = statusBar.transform.GetChild(0).GetChild(0).gameObject;
         statusBarFg.transform.localScale = new Vector3(1 - elapsedTime / timeToFinish, 1, 1);
-        anim.enabled = false;
+        //anim.enabled = false;
     }
 }
