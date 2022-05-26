@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Delivery : MonoBehaviour
 {
-    public GameObject item;
+    public GameObject item;    
 
     void OnTriggerStay2D(Collider2D col)
     {
@@ -22,7 +22,17 @@ public class Delivery : MonoBehaviour
         {
             item.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/plate_dirty");
             item.tag = "Dirty";
-            GameObject.Find("GameController").GetComponent<GameController>().points += 10;
+            List<GameObject> orders = GameObject.Find("GameController").GetComponent<GameController>().orders;
+            string itemName = item.GetComponent<SpriteRenderer>().sprite.name;
+            foreach (var order in orders)
+            {
+                Debug.Log(order.gameObject.transform.Find("Animation").gameObject.transform.Find("Food").gameObject.transform.GetChild(0).name + " " + itemName);
+                string orderFoodName = order.gameObject.transform.Find("Animation").gameObject.transform.Find("Food").gameObject.transform.GetChild(0).name; /*.Split("(")[0]*/;
+                if (orderFoodName == itemName)
+                {
+                    order.GetComponent<SpriteRenderer>().color = Color.green;
+                }
+            }
         }
     }
 

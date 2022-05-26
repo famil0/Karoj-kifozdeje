@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour
     public GameObject PointDigits;
     public GameObject TimeDigits;
     public Dictionary<GameObject, List<GameObject>> recipes = new Dictionary<GameObject, List<GameObject>>();
+    public List<GameObject> orders = new List<GameObject>();
 
     void Start()
     {
@@ -25,7 +26,7 @@ public class GameController : MonoBehaviour
         recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/onion_soup").gameObject, new List<GameObject>() { Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject });
         recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/vegy_soup").gameObject, new List<GameObject>() { Resources.Load<GameObject>("Prefabs/Ingredients/tomato").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/carrot").gameObject });
                 
-        NewOrder();
+        orders.Add(NewOrder());
     }
 
     void Update()
@@ -41,7 +42,7 @@ public class GameController : MonoBehaviour
         
     }
 
-    public void NewOrder()
+    public GameObject NewOrder()
     {
         System.Random r = new System.Random();
         GameObject order = Instantiate(Resources.Load<GameObject>("Prefabs/Order"));
@@ -64,5 +65,7 @@ public class GameController : MonoBehaviour
         food.transform.localPosition = new Vector3(0, 0, -0.1f);
         food.transform.localScale = new Vector3(size, size, 1);
         food.name = food.name.Split("(")[0];
+
+        return order;
     }
 }
