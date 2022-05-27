@@ -39,8 +39,11 @@ public class Order : MonoBehaviour
         transform.Find("Animation").Find("background").GetComponent<SpriteRenderer>().color = Color.green;
         seq.Append(transform.DOLocalMoveX(-1.7f, 0.5f));
         seq.OnComplete( () => Delete() );
-        
-        
+
+        if (elapsedTime <= timeToFinish * 0.66666f) gameController.points += 10;
+        else gameController.points += 5;
+
+
     }
 
     public void Delete()
