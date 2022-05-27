@@ -23,8 +23,8 @@ public class Order : MonoBehaviour
         if (elapsedTime < timeToFinish) elapsedTime += Time.deltaTime;
         if (elapsedTime >= timeToFinish)
         {
-            gameController.GetComponent<GameController>().orders.Remove(transform.gameObject);
-            Destroy(transform.gameObject);
+            Delete();
+            gameController.points -= 7;
         }
         else if (elapsedTime >= timeToFinish - 7) anim.SetTrigger("TimeIsOver");
 

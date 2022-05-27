@@ -15,6 +15,7 @@ public class Digits : MonoBehaviour
         {
             numbers.Add(Resources.Load<GameObject>($"Prefabs/Numbers/{i}"));
         }
+        numbers.Add(Resources.Load<GameObject>($"Prefabs/Numbers/minus"));
         offset = 0.3f;
     }
 
@@ -25,10 +26,19 @@ public class Digits : MonoBehaviour
             Destroy(item.gameObject);
         }
 
-        ;
+        
+
         for (int i = 0; i < value.ToString().Length; i++)
         {
-            var n = Instantiate(numbers[int.Parse(value.ToString()[i] + "")], transform.position - new Vector3((value.ToString().Length - 1) / 2 * offset - i * offset + (value.ToString().Length - 1) % 2 * (offset / 2), 0, 0.1f), transform.localRotation);
+            GameObject n;
+            if (i is 0 && value < 0)
+            {
+                n = Instantiate(numbers[10], transform.position - new Vector3((value.ToString().Length - 1) / 2 * offset - i * offset + (value.ToString().Length - 1) % 2 * (offset / 2), 0, 0.1f), transform.localRotation);
+            }
+            else
+            {
+                n = Instantiate(numbers[int.Parse(value.ToString()[i] + "")], transform.position - new Vector3((value.ToString().Length - 1) / 2 * offset - i * offset + (value.ToString().Length - 1) % 2 * (offset / 2), 0, 0.1f), transform.localRotation);
+            }
             n.transform.parent = transform;
             n.transform.localScale = transform.localScale;
         }
