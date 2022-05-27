@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using DG.Tweening;
 
 public class GameController : MonoBehaviour
 {
@@ -46,11 +47,7 @@ public class GameController : MonoBehaviour
 
 
         
-        for (int i = 0; i < orders.Count; i++)
-        {
-            orders[i].transform.localPosition = Vector3.Lerp(orders[i].transform.localPosition, new Vector3(orders[i].transform.localPosition.x, 0.7f + (i + 1) * -0.55f, orders[i].transform.localPosition.z), 5 * Time.deltaTime);
-                
-        }
+        
             
 
     }
@@ -80,5 +77,13 @@ public class GameController : MonoBehaviour
         food.name = food.name.Split("(")[0];        
 
         return order;
+    }
+
+    public void MoveOrders()
+    {
+        for (int i = 0; i < orders.Count; i++)
+        {
+            orders[i].transform.DOLocalMoveY(0.7f + (i + 1) * -0.55f, 0.8f);
+        }
     }
 }
