@@ -48,7 +48,7 @@ public class GameController : MonoBehaviour
         
         for (int i = 0; i < orders.Count; i++)
         {
-            orders[i].transform.localPosition = Vector3.Lerp(orders[i].transform.localPosition, new Vector3(orders[i].transform.localPosition.x, 0.7f + (i + 1) * -0.55f, orders[i].transform.localPosition.y), 5 * Time.deltaTime);
+            orders[i].transform.localPosition = Vector3.Lerp(orders[i].transform.localPosition, new Vector3(orders[i].transform.localPosition.x, 0.7f + (i + 1) * -0.55f, orders[i].transform.localPosition.z), 5 * Time.deltaTime);
                 
         }
             
