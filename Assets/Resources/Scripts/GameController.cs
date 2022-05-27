@@ -22,14 +22,14 @@ public class GameController : MonoBehaviour
         d = DateTime.Now;
         time = 0;
 
-        recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/tomato_soup").gameObject, new List<GameObject>() { Resources.Load<GameObject>("Prefabs/Ingredients/tomato").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/tomato").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/tomato").gameObject });
-        recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/onion_soup").gameObject, new List<GameObject>() { Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject });
-        recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/vegy_soup").gameObject, new List<GameObject>() { Resources.Load<GameObject>("Prefabs/Ingredients/tomato").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject, Resources.Load<GameObject>("Prefabs/Ingredients/carrot").gameObject });
+        GameObject tomato = Resources.Load<GameObject>("Prefabs/Ingredients/tomato").gameObject;
+        GameObject carrot = Resources.Load<GameObject>("Prefabs/Ingredients/carrot").gameObject;
+        GameObject onion = Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject;
+
+        recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/tomato_soup").gameObject, new List<GameObject>() { tomato, tomato, tomato });
+        recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/onion_soup").gameObject, new List<GameObject>() { onion, onion, onion });
+        recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/vegy_soup").gameObject, new List<GameObject>() { tomato, onion, carrot });
                 
-        orders.Add(NewOrder());
-        orders.Add(NewOrder());
-        orders.Add(NewOrder());
-        orders.Add(NewOrder());
         orders.Add(NewOrder());
         orders.Add(NewOrder());
     }
@@ -44,7 +44,15 @@ public class GameController : MonoBehaviour
         PointDigits.GetComponent<Digits>().SetDigits(points);
         TimeDigits.GetComponent<Digits>().SetDigits(int.Parse(Math.Floor(usableTime - time).ToString()));
 
+
         
+        for (int i = 0; i < orders.Count; i++)
+        {
+            orders[i].transform.localPosition = Vector3.Lerp(orders[i].transform.localPosition, new Vector3(orders[i].transform.localPosition.x, 0.7f + (i + 1) * -0.55f, orders[i].transform.localPosition.y), 5 * Time.deltaTime);
+                
+        }
+            
+
     }
 
     public GameObject NewOrder()
@@ -59,7 +67,7 @@ public class GameController : MonoBehaviour
         float offset = 0.3f;
         for (int i = 0; i < recipes[food].Count; i++)
         {
-            GameObject ingredient = Instantiate(recipes[food][i], ingredients.transform.position - new Vector3(i * (offset * 1.2f), 0, 0.1f), ingredients.transform.localRotation);
+            GameObject ingredient = Instantiate(recipes[food][i], ingredients.transform.position - new Vector3(i * (offset * 1f), 0, 0.1f), ingredients.transform.localRotation);
             ingredient.transform.parent = ingredients.transform;
             ingredient.transform.localScale = new Vector3(size, size, 1);
         }
@@ -69,7 +77,7 @@ public class GameController : MonoBehaviour
         food.transform.parent = order.transform.Find("Animation").Find("Food").transform;
         food.transform.localPosition = new Vector3(0, 0, -0.1f);
         food.transform.localScale = new Vector3(size, size, 1);
-        food.name = food.name.Split("(")[0];
+        food.name = food.name.Split("(")[0];        
 
         return order;
     }

@@ -16,9 +16,13 @@ public class Order : MonoBehaviour
     }
 
     void Update()
-    {
+    {    
         if (elapsedTime < timeToFinish) elapsedTime += Time.deltaTime;
-        if (elapsedTime >= timeToFinish) Destroy(transform.gameObject);
+        if (elapsedTime >= timeToFinish)
+        {
+            GameObject.Find("GameController").GetComponent<GameController>().orders.Remove(transform.gameObject);
+            Destroy(transform.gameObject);
+        }
         else if (elapsedTime >= timeToFinish - 7) anim.SetTrigger("TimeIsOver");
 
         GameObject statusBarFg = statusBar.transform.GetChild(0).GetChild(0).gameObject;
