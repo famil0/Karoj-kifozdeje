@@ -11,13 +11,15 @@ public class GameController : MonoBehaviour
     public DateTime d;
     public int usableTime;
     public float time;
-    public GameObject PointDigits;
-    public GameObject TimeDigits;
+    public Digits PointDigits;
+    public Digits TimeDigits;
     public Dictionary<GameObject, List<GameObject>> recipes = new Dictionary<GameObject, List<GameObject>>();
     public List<GameObject> orders = new List<GameObject>();
 
     void Start()
     {
+        PointDigits = Camera.main.transform.Find("PointDigits").GetChild(0).GetComponent<Digits>();
+        TimeDigits = Camera.main.transform.Find("TimeDigits").GetChild(0).GetComponent<Digits>();
         usableTime = 300;
         points = 0;
         d = DateTime.Now;
@@ -42,8 +44,8 @@ public class GameController : MonoBehaviour
             time += Time.deltaTime;
         }
 
-        PointDigits.GetComponent<Digits>().SetDigits(points);
-        TimeDigits.GetComponent<Digits>().SetDigits(int.Parse(Math.Floor(usableTime - time).ToString()));
+        PointDigits.SetDigits(points);
+        TimeDigits.SetDigits(int.Parse(Math.Floor(usableTime - time).ToString()));
 
 
         
