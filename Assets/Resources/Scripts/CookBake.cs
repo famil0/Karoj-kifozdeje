@@ -83,7 +83,7 @@ public class CookBake : MonoBehaviour
             warningTime = 0;
         }
 
-        if (warningTime >= 3 && burned is false)
+        if (warningTime >= 5 && burned is false)
         {
             tag = "Burning";
             statusBar.SetActive(false);
