@@ -18,6 +18,7 @@ public class Infinite : MonoBehaviour
         if (item.transform.childCount == 0)
         {
             GameObject newItem = Instantiate(infinite);
+            newItem.name = newItem.name.Split("(")[0];
             newItem.transform.parent = item.transform;
             newItem.transform.position = infinite.transform.position;
             newItem.transform.localScale = infinite.transform.localScale;

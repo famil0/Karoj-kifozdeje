@@ -16,6 +16,8 @@ TagManager:
   - Soup
   - Burning
   - FireExtinguisher
+  - CookingPot
+  - Pan
   layers:
   - Default
   - TransparentFX

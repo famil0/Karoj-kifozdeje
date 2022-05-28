@@ -66,6 +66,7 @@ public class Vagodeszka : MonoBehaviour
         {
             sliced = true;
             item.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Images/{item.GetComponent<SpriteRenderer>().sprite.name}_sliced");
+            item.name = item.GetComponent<SpriteRenderer>().sprite.name;
             item.tag = "Sliced";
             SetVariables();
         }

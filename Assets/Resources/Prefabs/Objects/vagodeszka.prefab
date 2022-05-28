@@ -397,6 +397,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StatusBar
       objectReference: {fileID: 0}
+    - target: {fileID: 3546445311899235484, guid: d10a52bd13da72140a63e51c374b23e4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d10a52bd13da72140a63e51c374b23e4, type: 3}
 --- !u!4 &4958802430332264066 stripped

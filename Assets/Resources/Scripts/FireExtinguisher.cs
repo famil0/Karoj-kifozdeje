@@ -39,7 +39,7 @@ public class FireExtinguisher : MonoBehaviour
         if (finished)
         {
             Destroy(fire.gameObject);
-            fazek.GetComponent<Fazek>().SetVariables();
+            fazek.GetComponent<CookBake>().SetVariables();
             fazek.tag = "Untagged";
         }
     }

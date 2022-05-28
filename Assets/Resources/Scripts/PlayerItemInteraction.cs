@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerItemInteraction : MonoBehaviour
 {
-    public GameObject target;
+    //public GameObject target;
     public bool spaceDown = false;
     public bool ctrlDown = false;
     public bool canInteract = false;
@@ -72,22 +72,27 @@ public class PlayerItemInteraction : MonoBehaviour
                 item.transform.localPosition = Vector3.zero;
             }
             //put items into cooking pot
-            if (handItemSlot.transform.childCount > 0 && handItemSlot.transform.GetChild(0).tag == "Sliced" && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") is not null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").transform.GetComponent<Fazek>().isFull is false)
+            if (handItemSlot.transform.childCount > 0 && handItemSlot.transform.GetChild(0).tag == "Sliced" && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") is not null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").transform.GetComponent<CookBake>().isFull is false)
             {
                 float offset = 0.3f;
                 GameObject cookingPot = FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").gameObject;
+                for (int i = 0; i < cookingPot.GetComponent<CookBake>().allowedItems.Count; i++)
+                {
+                    if (cookingPot.GetComponent<CookBake>().allowedItems[i].name == handItem.name) break;
+                    if (i == cookingPot.GetComponent<CookBake>().allowedItems.Count - 1) return;
+                }
                 GameObject item = FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).gameObject;
-                cookingPot.GetComponent<Fazek>().items.Add(item.gameObject);
+                cookingPot.GetComponent<CookBake>().items.Add(item.gameObject);
                 item.transform.parent = FindChildByName(cookingPot.gameObject, "Items").transform;
-                item.transform.localPosition = new Vector3(-2 * offset + cookingPot.GetComponent<Fazek>().items.Count * offset, 0, -2.1f);
+                item.transform.localPosition = new Vector3(-2 * offset + cookingPot.GetComponent<CookBake>().items.Count * offset, 0, -2.1f);
             }
             //soup to plate            
-            else if (FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") != null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<Fazek>().cooked && handItemSlot.transform.GetChild(0).tag == "Clean")
+            else if (FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") != null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<CookBake>().cooked && handItemSlot.transform.GetChild(0).tag == "Clean")
             {
                 GameObject fazek = FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek");
                 GameObject plate = FindChildByName(handItem, "plate").gameObject;
                 int tomatoes = 0, potatoes = 0, onions = 0, carrots = 0;
-                foreach (var item in fazek.GetComponent<Fazek>().items)
+                foreach (var item in fazek.GetComponent<CookBake>().items)
                 {
                     if (item.GetComponent<SpriteRenderer>().sprite.name == "tomato_sliced") tomatoes++;
                     else if (item.GetComponent<SpriteRenderer>().sprite.name == "potato_sliced") potatoes++;
@@ -155,23 +160,29 @@ public class PlayerItemInteraction : MonoBehaviour
         {
             return;
         }
-        target.transform.gameObject.SetActive(true);
+        //target.transform.gameObject.SetActive(true);
         canInteract = true;
+        col.gameObject.GetComponent<SpriteRenderer>().color = new Color32(180, 180, 180, 255);
     }
 
     private void OnTriggerExit2D(Collider2D col)
     {
+        if (col.name == "Karoj")
+        {
+            return;
+        }
         canInteract = false;
-        target.transform.gameObject.SetActive(false);
+        //target.transform.gameObject.SetActive(false);
         if (handItem is not null && handItem.tag is "FireExtinguisher")
         {
             handItem.GetComponent<FireExtinguisher>().SetVariables();
         }
+        col.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     void ResetOven(GameObject fazek)
     {
-        fazek.GetComponent<Fazek>().SetVariables();
+        fazek.GetComponent<CookBake>().SetVariables();
     }
 
     public GameObject FindChildByName(GameObject parentGameObject, string name)
