@@ -15,7 +15,7 @@ public class Order : MonoBehaviour
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         statusBar = transform.Find("Animation").Find("StatusBar").gameObject;
-        timeToFinish = 90;
+        timeToFinish = 100;
     }
 
     void Update()
@@ -51,7 +51,6 @@ public class Order : MonoBehaviour
         List<GameObject> orders = gameController.GetComponent<GameController>().orders;
         orders.Remove(transform.gameObject);
         Destroy(transform.gameObject);
-        orders.Add(gameController.NewOrder());
         gameController.MoveOrders();
     }
 }

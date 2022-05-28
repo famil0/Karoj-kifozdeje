@@ -8,13 +8,16 @@ using DG.Tweening;
 public class GameController : MonoBehaviour
 {
     public int points;
-    public DateTime d;
+    public int nextOrder;
     public int usableTime;
     public float time;
     public Digits PointDigits;
     public Digits TimeDigits;
     public Dictionary<GameObject, List<GameObject>> recipes = new Dictionary<GameObject, List<GameObject>>();
     public List<GameObject> orders = new List<GameObject>();
+    Sequence seq;
+
+
 
     void Start()
     {
@@ -22,9 +25,10 @@ public class GameController : MonoBehaviour
         TimeDigits = Camera.main.transform.Find("TimeDigits").GetChild(0).GetComponent<Digits>();
         usableTime = 300;
         points = 0;
-        d = DateTime.Now;
+        nextOrder = new System.Random().Next(20, 31);
+        
         time = 0;
-
+        
         GameObject tomato = Resources.Load<GameObject>("Prefabs/Ingredients/tomato").gameObject;
         GameObject carrot = Resources.Load<GameObject>("Prefabs/Ingredients/carrot").gameObject;
         GameObject onion = Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject;
@@ -33,7 +37,6 @@ public class GameController : MonoBehaviour
         recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/onion_soup").gameObject, new List<GameObject>() { onion, onion, onion });
         recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/vegy_soup").gameObject, new List<GameObject>() { tomato, onion, carrot });
                 
-        orders.Add(NewOrder());
         orders.Add(NewOrder());
     }
 
@@ -49,9 +52,15 @@ public class GameController : MonoBehaviour
 
 
         
-        
-            
 
+    }
+
+    public void NewOrder(int seconds)
+    {
+        seq = DOTween.Sequence();
+        seq.SetDelay(seconds);
+        seq.OnComplete(() => orders.Add(NewOrder()));
+        
     }
 
     public GameObject NewOrder()
@@ -76,7 +85,10 @@ public class GameController : MonoBehaviour
         food.transform.parent = order.transform.Find("Animation").Find("Food").transform;
         food.transform.localPosition = new Vector3(0, 0, -0.1f);
         food.transform.localScale = new Vector3(size, size, 1);
-        food.name = food.name.Split("(")[0];        
+        food.name = food.name.Split("(")[0];
+
+        nextOrder = new System.Random().Next(20, 31);
+        NewOrder(nextOrder);
 
         return order;
     }
