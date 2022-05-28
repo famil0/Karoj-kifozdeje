@@ -15,7 +15,7 @@ TagManager:
   - Washing
   - Soup
   - Burning
-  - FireExtingusher
+  - FireExtinguisher
   layers:
   - Default
   - TransparentFX

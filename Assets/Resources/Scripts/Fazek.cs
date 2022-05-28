@@ -88,6 +88,7 @@ public class Fazek : MonoBehaviour
             statusBar.SetActive(false);
             burned = true;
             GameObject fire = Instantiate(Resources.Load<GameObject>("Prefabs/Fire"));
+            fire.name = fire.name.Split("(")[0];
             fire.transform.parent = transform;
             fire.transform.localScale = Vector3.one;
             fire.transform.localPosition = new Vector3(0, 0, fire.transform.localPosition.z);
