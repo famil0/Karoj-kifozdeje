@@ -14,6 +14,8 @@ public class Fazek : MonoBehaviour
     public bool cooking;
     public bool canCook;
     public Animator anim;
+    public bool burned;
+    public float warningTime;
 
     private void Start()
     {
@@ -35,6 +37,8 @@ public class Fazek : MonoBehaviour
         cooked = false;
         cooking = false;
         canCook = false;
+        burned = false;
+        warningTime = 0;
     }
 
     void Update()
@@ -44,7 +48,7 @@ public class Fazek : MonoBehaviour
         if (items.Count > 0)
         {
             reqTimeToCook = items.Count * 10;
-            if (canCook && cooked is false)
+            if (canCook && cooked is false && burned is false)
             {
                 Cook();
             }
@@ -67,13 +71,26 @@ public class Fazek : MonoBehaviour
             canCook = false;
         }
 
-        if ((cooked && cooking) || (elapsedTime >= reqTimeToCook && cooking))
+        if ((cooked && cooking) || (elapsedTime >= reqTimeToCook && cooking) && burned is false)
         {
             anim.SetTrigger("Warning");
+            warningTime += Time.deltaTime;
         }
         else
         {
             anim.SetTrigger("NoWarning");
+            warningTime = 0;
+        }
+
+        if (warningTime >= 3 && burned is false)
+        {
+            tag = "Burning";
+            statusBar.SetActive(false);
+            burned = true;
+            GameObject fire = Instantiate(Resources.Load<GameObject>("Prefabs/Fire"));
+            fire.transform.parent = transform;
+            fire.transform.localScale = Vector3.one;
+            fire.transform.localPosition = new Vector3(0, 0, fire.transform.localPosition.z);
         }
 
         if (canCook && cooking)
