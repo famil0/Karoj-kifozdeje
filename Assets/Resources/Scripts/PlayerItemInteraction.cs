@@ -87,10 +87,10 @@ public class PlayerItemInteraction : MonoBehaviour
                 item.transform.localPosition = new Vector3(-2 * offset + cookingPot.GetComponent<CookBake>().items.Count * offset, 0, -2.1f);
             }
             //soup to plate            
-            else if (FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") != null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<CookBake>().cooked && handItemSlot.transform.GetChild(0).tag == "Clean")
+            else if (FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") != null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<CookBake>().cooked && handItem.tag == "Clean" && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<CookBake>().burned is false)
             {
                 GameObject fazek = FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek");
-                GameObject plate = FindChildByName(handItem, "plate").gameObject;
+                GameObject plate = FindChildByName(handItemSlot, "plate").gameObject;
                 int tomatoes = 0, potatoes = 0, onions = 0, carrots = 0;
                 foreach (var item in fazek.GetComponent<CookBake>().items)
                 {
