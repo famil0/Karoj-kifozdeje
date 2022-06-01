@@ -32,11 +32,19 @@ public class GameController : MonoBehaviour
         GameObject tomato = Resources.Load<GameObject>("Prefabs/Ingredients/tomato").gameObject;
         GameObject carrot = Resources.Load<GameObject>("Prefabs/Ingredients/carrot").gameObject;
         GameObject onion = Resources.Load<GameObject>("Prefabs/Ingredients/onion").gameObject;
+        GameObject meat = Resources.Load<GameObject>("Prefabs/Ingredients/meat_baked").gameObject;
 
+        //soups
         recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/tomato_soup").gameObject, new List<GameObject>() { tomato, tomato, tomato });
         recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/onion_soup").gameObject, new List<GameObject>() { onion, onion, onion });
         recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/vegy_soup").gameObject, new List<GameObject>() { tomato, onion, carrot });
-                
+
+        //burgers
+        recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/Burger 1").gameObject, new List<GameObject>() { meat });
+        recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/Burger 2").gameObject, new List<GameObject>() { meat, tomato });
+
+
+
         orders.Add(NewOrder());
     }
 

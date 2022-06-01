@@ -33,17 +33,33 @@ public class Delivery : MonoBehaviour
         }
         else
         {
-            item = null;
+            return;
         }
 
 
-        if (item is not null && item.tag is "Soup")
+        if (item.tag is "Soup")
         {
             string itemName = item.GetComponent<SpriteRenderer>().sprite.name;
             foreach (var order in orders)
             {
                 string orderFoodName = order.gameObject.transform.Find("Animation").gameObject.transform.Find("Food").gameObject.transform.GetChild(0).name;
                 if (orderFoodName == itemName)
+                {
+                    order.GetComponent<Order>().Done();
+                    Destroy(item.gameObject);
+                    Sequence seq = DOTween.Sequence();
+                    seq.SetDelay(3);
+                    seq.OnComplete(() => GetBackPlate());
+                    break;
+                }
+            }
+        }
+        else if (item.tag.Contains("Burger"))
+        {
+            Debug.Log("asd");
+            foreach (var order in orders)
+            {
+                if (order.transform.Find("Animation").Find("Food").GetChild(0).tag == item.tag)
                 {
                     order.GetComponent<Order>().Done();
                     Destroy(item.gameObject);

@@ -200,6 +200,7 @@ GameObject:
   - component: {fileID: 6961907251389535851}
   - component: {fileID: 6961907251389535850}
   - component: {fileID: 3106125523888437146}
+  - component: {fileID: 3942128470342740397}
   m_Layer: 0
   m_Name: fazek
   m_TagString: CookingPot
@@ -305,6 +306,22 @@ MonoBehaviour:
   - {fileID: 1044224535266092640, guid: 5933e789254fd22409349c7c6ab141d0, type: 3}
   - {fileID: 1044224535266092640, guid: 014e0b15cb8acdc4fb3961653bb9f560, type: 3}
   - {fileID: 1044224535266092640, guid: 44de7b0aff3ccd746b500455080ec23a, type: 3}
+--- !u!114 &3942128470342740397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6961907251389535849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3439f1901a3950a428355285ea3780e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowedItems:
+  - {fileID: 1044224535266092640, guid: 5933e789254fd22409349c7c6ab141d0, type: 3}
+  - {fileID: 1044224535266092640, guid: 44de7b0aff3ccd746b500455080ec23a, type: 3}
+  - {fileID: 1044224535266092640, guid: 014e0b15cb8acdc4fb3961653bb9f560, type: 3}
 --- !u!1001 &3046932318271756679
 PrefabInstance:
   m_ObjectHideFlags: 0

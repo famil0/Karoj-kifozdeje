@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerItemInteraction : MonoBehaviour
 {
@@ -54,14 +55,11 @@ public class PlayerItemInteraction : MonoBehaviour
             spaceDown = false;
             //pick up items
             if (handItemSlot.transform.childCount is 0 && FindChildByName(col.gameObject, "Item").transform.childCount is not 0)
-            {
-                //if (FindChildByName(col.gameObject, "Item").transform.childCount > 0)
-                //{
-                    GameObject item = FindChildByName(col.gameObject, "Item").transform.GetChild(0).gameObject;
-                    if (item.tag == "Slicing" || item.tag == "Washing") return;
-                    item.transform.parent = FindChildByName(transform.parent.gameObject, "handitem").transform;
-                    item.transform.localPosition = new Vector3(0, 0, item.transform.position.z);
-                //}
+            {                
+                GameObject item = FindChildByName(col.gameObject, "Item").transform.GetChild(0).gameObject;
+                if (item.tag == "Slicing" || item.tag == "Washing") return;
+                item.transform.parent = FindChildByName(transform.parent.gameObject, "handitem").transform;
+                item.transform.localPosition = new Vector3(0, 0, item.transform.position.z);
             }
             //place down items
             else if (handItemSlot.transform.childCount is 1 && FindChildByName(col.gameObject, "Item").transform.childCount is 0)
@@ -75,10 +73,10 @@ public class PlayerItemInteraction : MonoBehaviour
             {
                 float offset = 0.3f;
                 GameObject cookingPot = FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").gameObject;
-                for (int i = 0; i < cookingPot.GetComponent<OvenCook>().allowedItems.Count; i++)
+                for (int i = 0; i < cookingPot.GetComponent<AllowedItems>().allowedItems.Count; i++)
                 {
-                    if (cookingPot.GetComponent<OvenCook>().allowedItems[i].name == handItem.name) break;
-                    if (i == cookingPot.GetComponent<OvenCook>().allowedItems.Count - 1) return;
+                    if (cookingPot.GetComponent<AllowedItems>().allowedItems[i].name == handItem.name) break;
+                    if (i == cookingPot.GetComponent<AllowedItems>().allowedItems.Count - 1) return;
                 }
                 GameObject item = FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).gameObject;
                 cookingPot.GetComponent<OvenCook>().items.Add(item.gameObject);
@@ -89,23 +87,23 @@ public class PlayerItemInteraction : MonoBehaviour
             if (handItemSlot.transform.childCount > 0 && FindChildByName(FindChildByName(col.gameObject, "Item"), "pan") is not null && FindChildByName(FindChildByName(col.gameObject, "Item"), "pan").transform.GetComponent<PanBake>().isFull is false)
             {
                 GameObject cookingPan = FindChildByName(FindChildByName(col.gameObject, "Item"), "pan").gameObject;
-                for (int i = 0; i < cookingPan.GetComponent<PanBake>().allowedItems.Count; i++)
+                for (int i = 0; i < cookingPan.GetComponent<AllowedItems>().allowedItems.Count; i++)
                 {
-                    if (cookingPan.GetComponent<PanBake>().allowedItems[i].name == handItem.name) break;
-                    if (i == cookingPan.GetComponent<PanBake>().allowedItems.Count - 1) return;
+                    if (cookingPan.GetComponent<AllowedItems>().allowedItems[i].name == handItem.name) break;
+                    if (i == cookingPan.GetComponent<AllowedItems>().allowedItems.Count - 1) return;
                 }
                 GameObject item = FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).gameObject;
                 cookingPan.GetComponent<PanBake>().items.Add(item.gameObject);
-                item.transform.parent = FindChildByName(cookingPan.gameObject, "Items").transform;
+                item.transform.parent = FindChildByName(cookingPan.gameObject, "Item").transform;
                 item.transform.localPosition = new Vector3(0, 0, -2.1f);
             }
             //soup to plate            
-            else if (FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") != null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<PanBake>().baked && handItem.tag == "Clean" && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<PanBake>().burned is false)
+            else if (col.gameObject.transform.Find("Item").Find("fazek") is not null && col.gameObject.transform.Find("Item").Find("fazek").GetComponent<OvenCook>().cooked && handItem.tag is "Clean" && col.gameObject.transform.Find("Item").Find("fazek").GetComponent<OvenCook>().burned is false)
             {
-                GameObject fazek = FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek");
-                GameObject plate = FindChildByName(handItemSlot, "plate").gameObject;
+                GameObject fazek = col.gameObject.transform.Find("Item").Find("fazek").gameObject;
+                GameObject plate = handItemSlot.transform.Find("plate").gameObject;
                 int tomatoes = 0, potatoes = 0, onions = 0, carrots = 0;
-                foreach (var item in fazek.GetComponent<PanBake>().items)
+                foreach (var item in fazek.GetComponent<OvenCook>().items)
                 {
                     if (item.GetComponent<SpriteRenderer>().sprite.name == "tomato_sliced") tomatoes++;
                     else if (item.GetComponent<SpriteRenderer>().sprite.name == "potato_sliced") potatoes++;
@@ -131,9 +129,47 @@ public class PlayerItemInteraction : MonoBehaviour
                     plate.tag = "Soup";
                     ResetOven(fazek);
                 }
+            }
+            //bread to plate
+            else if (handItem is not null && col.gameObject.transform.Find("Item").Find("plate") is not null && col.gameObject.transform.Find("Item").Find("plate").tag is "Clean" && col.gameObject.transform.Find("Item").Find("plate").Find("Item") is not null && handItem.name is "Bread_sliced")
+            {
+                GameObject plate = col.gameObject.transform.Find("Item").Find("plate").gameObject;
+                handItem.transform.parent = plate.transform.Find("Item");
+                handItem.transform.localPosition = new Vector3(0, 0, handItem.transform.localPosition.z);
+                plate.tag = "Burger";
+            }
+            //ingredients to burger
+            else if (handItem is not null && handItem.tag is "Sliced" && col.gameObject.transform.Find("Item").Find("plate") is not null && col.gameObject.transform.Find("Item").Find("plate").Find("Item").Find("Bread_sliced") is not null)
+            {
+                GameObject plate = col.gameObject.transform.Find("Item").Find("plate").gameObject;
+                GameObject burger = col.gameObject.transform.Find("Item").Find("plate").Find("Item").Find("Bread_sliced").gameObject;
+                float offsetY = 0.015f;
+                float offsetZ = 0.01f;
+                foreach (var allowed in burger.GetComponent<AllowedItems>().allowedItems)
+                {
+                    if (handItem.name == allowed.name)
+                    {
+                        handItem.transform.parent = burger.transform.Find("Items");
+                        burger.transform.Find("top").transform.DOLocalMoveY(burger.transform.Find("Items").childCount * offsetY, 0);
+                        handItem.transform.DOLocalMove(new Vector3(0, (burger.transform.Find("Items").childCount - 1) * offsetY, 0.04f - burger.transform.Find("Items").childCount * offsetZ), 0);
+                        plate.tag += allowed.name.Split("_")[0];
+                    }
+                }
+            }
 
-
-
+            //baked meat to burger
+            else if (handItem is not null && handItem.name is "pan" && handItem.GetComponent<PanBake>().baked && col.gameObject.transform.Find("Item").Find("plate") is not null && col.gameObject.transform.Find("Item").Find("plate").Find("Item").Find("Bread_sliced") is not null)
+            {
+                ResetPan(handItem);
+                float offsetY = 0.015f;
+                float offsetZ = 0.01f;
+                GameObject burger = col.gameObject.transform.Find("Item").Find("plate").Find("Item").Find("Bread_sliced").gameObject;
+                GameObject meat = Instantiate(Resources.Load<GameObject>("Prefabs/Ingredients/Meat_baked"));
+                meat.name = meat.name.Split("(")[0];
+                meat.transform.DOLocalMove(Vector3.zero, 0);
+                meat.transform.localScale = new Vector3(3.125f, 3.125f, 1);
+                meat.transform.parent = burger.transform.Find("MeatSlot");
+                burger.transform.Find("top").transform.DOLocalMoveY(burger.transform.Find("Items").childCount * offsetY, 0);
             }
         }
         //slice
@@ -194,6 +230,11 @@ public class PlayerItemInteraction : MonoBehaviour
     }
 
     void ResetOven(GameObject fazek)
+    {
+        fazek.GetComponent<OvenCook>().SetVariables();
+    }
+
+    void ResetPan(GameObject fazek)
     {
         fazek.GetComponent<PanBake>().SetVariables();
     }

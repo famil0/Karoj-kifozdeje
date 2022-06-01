@@ -69,9 +69,14 @@ public class Vagodeszka : MonoBehaviour
         if (statusBarFg.transform.localScale.x >= 1)
         {
             sliced = true;
-            item.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>($"Images/{item.GetComponent<SpriteRenderer>().sprite.name}_sliced");
-            item.name = item.GetComponent<SpriteRenderer>().sprite.name;
-            item.tag = "Sliced";
+            GameObject tmp = Instantiate(Resources.Load<GameObject>($"Prefabs/Ingredients/{item.GetComponent<SpriteRenderer>().sprite.name}_sliced"));
+            tmp.transform.parent = transform.Find("Item");
+            tmp.transform.localScale = Vector3.one;
+            tmp.transform.localPosition = new Vector3(0, 0, item.transform.localPosition.z);
+            tmp.tag = "Sliced";
+            Destroy(item.gameObject);
+            item = tmp;
+            item.name = item.name.Split("(")[0];    
             SetVariables();
         }
         else if (statusBarFg.transform.localScale.x >= 1)

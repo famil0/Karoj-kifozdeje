@@ -16,7 +16,6 @@ public class OvenCook : MonoBehaviour
     public Animator anim;
     public bool burned;
     public float warningTime;
-    public List<GameObject> allowedItems;
 
     private void Start()
     {

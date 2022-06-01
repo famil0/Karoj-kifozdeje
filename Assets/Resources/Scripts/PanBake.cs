@@ -16,7 +16,6 @@ public class PanBake : MonoBehaviour
     public Animator anim;
     public bool burned;
     public float warningTime;
-    public List<GameObject> allowedItems;
 
     private void Start()
     {
@@ -116,7 +115,7 @@ public class PanBake : MonoBehaviour
         GameObject statusBarFg = statusBar.transform.GetChild(0).GetChild(0).gameObject;
         statusBarFg.transform.localScale = new Vector3(elapsedTime / reqTimeToBake, 1, 1);
         
-        if (statusBarFg.transform.localScale.x >= 1 && items.Count == 3)
+        if (statusBarFg.transform.localScale.x >= 1 && items.Count == 1)
         {
             baked = true;
         }

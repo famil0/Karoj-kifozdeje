@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 6961907249765357272}
   - component: {fileID: 6961907249765357273}
   m_Layer: 0
-  m_Name: Items
+  m_Name: Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,6 +200,7 @@ GameObject:
   - component: {fileID: 6961907251389535851}
   - component: {fileID: 6961907251389535850}
   - component: {fileID: 6992808469064360962}
+  - component: {fileID: 3479347869625375585}
   m_Layer: 0
   m_Name: pan
   m_TagString: Pan
@@ -293,14 +294,26 @@ MonoBehaviour:
   isFull: 0
   showItems: 0
   statusBar: {fileID: 0}
-  reqTimeToCook: 0
+  reqTimeToBake: 0
   elapsedTime: 0
-  cooked: 0
-  cooking: 0
-  canCook: 0
+  baked: 0
+  baking: 0
+  canBake: 0
   anim: {fileID: 5006319058730240728}
   burned: 0
   warningTime: 0
+--- !u!114 &3479347869625375585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6961907251389535849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3439f1901a3950a428355285ea3780e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   allowedItems:
   - {fileID: 2483934899503097607, guid: d5d51e91824f9414a914c1dcdb45f283, type: 3}
 --- !u!1001 &3046932318271756679

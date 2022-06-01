@@ -18,6 +18,8 @@ TagManager:
   - FireExtinguisher
   - CookingPot
   - Pan
+  - Burger
+  - BurgerTomato
   layers:
   - Default
   - TransparentFX
