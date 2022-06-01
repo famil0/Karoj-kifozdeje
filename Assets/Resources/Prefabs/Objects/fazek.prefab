@@ -199,7 +199,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6961907251389535851}
   - component: {fileID: 6961907251389535850}
-  - component: {fileID: 6961907251389535852}
+  - component: {fileID: 3106125523888437146}
   m_Layer: 0
   m_Name: fazek
   m_TagString: CookingPot
@@ -277,7 +277,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6961907251389535852
+--- !u!114 &3106125523888437146
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

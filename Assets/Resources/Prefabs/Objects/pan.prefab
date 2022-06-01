@@ -199,9 +199,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6961907251389535851}
   - component: {fileID: 6961907251389535850}
-  - component: {fileID: 6961907251389535852}
+  - component: {fileID: 6992808469064360962}
   m_Layer: 0
-  m_Name: serpenyo
+  m_Name: pan
   m_TagString: Pan
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -277,7 +277,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6961907251389535852
+--- !u!114 &6992808469064360962
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -286,7 +286,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6961907251389535849}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 628c2ee40caeabe438590a9a1cf47135, type: 3}
+  m_Script: {fileID: 11500000, guid: 667b21c4985803f4b966437f4dec146e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   items: []
@@ -301,6 +301,8 @@ MonoBehaviour:
   anim: {fileID: 5006319058730240728}
   burned: 0
   warningTime: 0
+  allowedItems:
+  - {fileID: 2483934899503097607, guid: d5d51e91824f9414a914c1dcdb45f283, type: 3}
 --- !u!1001 &3046932318271756679
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerItemInteraction : MonoBehaviour
 {
-    //public GameObject target;
     public bool spaceDown = false;
     public bool ctrlDown = false;
     public bool canInteract = false;
@@ -72,27 +71,41 @@ public class PlayerItemInteraction : MonoBehaviour
                 item.transform.localPosition = Vector3.zero;
             }
             //put items into cooking pot
-            if (handItemSlot.transform.childCount > 0 && handItemSlot.transform.GetChild(0).tag == "Sliced" && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") is not null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").transform.GetComponent<CookBake>().isFull is false)
+            if (handItemSlot.transform.childCount > 0 && handItemSlot.transform.GetChild(0).tag == "Sliced" && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") is not null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").transform.GetComponent<OvenCook>().isFull is false)
             {
                 float offset = 0.3f;
                 GameObject cookingPot = FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").gameObject;
-                for (int i = 0; i < cookingPot.GetComponent<CookBake>().allowedItems.Count; i++)
+                for (int i = 0; i < cookingPot.GetComponent<OvenCook>().allowedItems.Count; i++)
                 {
-                    if (cookingPot.GetComponent<CookBake>().allowedItems[i].name == handItem.name) break;
-                    if (i == cookingPot.GetComponent<CookBake>().allowedItems.Count - 1) return;
+                    if (cookingPot.GetComponent<OvenCook>().allowedItems[i].name == handItem.name) break;
+                    if (i == cookingPot.GetComponent<OvenCook>().allowedItems.Count - 1) return;
                 }
                 GameObject item = FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).gameObject;
-                cookingPot.GetComponent<CookBake>().items.Add(item.gameObject);
+                cookingPot.GetComponent<OvenCook>().items.Add(item.gameObject);
                 item.transform.parent = FindChildByName(cookingPot.gameObject, "Items").transform;
-                item.transform.localPosition = new Vector3(-2 * offset + cookingPot.GetComponent<CookBake>().items.Count * offset, 0, -2.1f);
+                item.transform.localPosition = new Vector3(-2 * offset + cookingPot.GetComponent<OvenCook>().items.Count * offset, 0, -2.1f);
+            }
+            //put items into cooking pan
+            if (handItemSlot.transform.childCount > 0 && FindChildByName(FindChildByName(col.gameObject, "Item"), "pan") is not null && FindChildByName(FindChildByName(col.gameObject, "Item"), "pan").transform.GetComponent<PanBake>().isFull is false)
+            {
+                GameObject cookingPan = FindChildByName(FindChildByName(col.gameObject, "Item"), "pan").gameObject;
+                for (int i = 0; i < cookingPan.GetComponent<PanBake>().allowedItems.Count; i++)
+                {
+                    if (cookingPan.GetComponent<PanBake>().allowedItems[i].name == handItem.name) break;
+                    if (i == cookingPan.GetComponent<PanBake>().allowedItems.Count - 1) return;
+                }
+                GameObject item = FindChildByName(transform.parent.gameObject, "handitem").transform.GetChild(0).gameObject;
+                cookingPan.GetComponent<PanBake>().items.Add(item.gameObject);
+                item.transform.parent = FindChildByName(cookingPan.gameObject, "Items").transform;
+                item.transform.localPosition = new Vector3(0, 0, -2.1f);
             }
             //soup to plate            
-            else if (FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") != null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<CookBake>().cooked && handItem.tag == "Clean" && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<CookBake>().burned is false)
+            else if (FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek") != null && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<PanBake>().baked && handItem.tag == "Clean" && FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek").GetComponent<PanBake>().burned is false)
             {
                 GameObject fazek = FindChildByName(FindChildByName(col.gameObject, "Item"), "fazek");
                 GameObject plate = FindChildByName(handItemSlot, "plate").gameObject;
                 int tomatoes = 0, potatoes = 0, onions = 0, carrots = 0;
-                foreach (var item in fazek.GetComponent<CookBake>().items)
+                foreach (var item in fazek.GetComponent<PanBake>().items)
                 {
                     if (item.GetComponent<SpriteRenderer>().sprite.name == "tomato_sliced") tomatoes++;
                     else if (item.GetComponent<SpriteRenderer>().sprite.name == "potato_sliced") potatoes++;
@@ -140,10 +153,10 @@ public class PlayerItemInteraction : MonoBehaviour
         }
 
         //fire extingusher
-        else if (ctrlDown && col.gameObject.transform.Find("Item").Find("fazek").tag == "Burning")
+        else if (ctrlDown && col.gameObject.transform.Find("Item").GetChild(0).tag == "Burning")
         {
             ctrlDown = false;
-            GameObject fazek = col.gameObject.transform.Find("Item").Find("fazek").gameObject;
+            GameObject fazek = col.gameObject.transform.Find("Item").GetChild(0).gameObject;
             handItem.GetComponent<FireExtinguisher>().fazek = fazek;
             handItem.GetComponent<FireExtinguisher>().fire = fazek.transform.Find("Fire").gameObject;
             handItem.GetComponent<FireExtinguisher>().canExtinguish = true;            
@@ -182,7 +195,7 @@ public class PlayerItemInteraction : MonoBehaviour
 
     void ResetOven(GameObject fazek)
     {
-        fazek.GetComponent<CookBake>().SetVariables();
+        fazek.GetComponent<PanBake>().SetVariables();
     }
 
     public GameObject FindChildByName(GameObject parentGameObject, string name)

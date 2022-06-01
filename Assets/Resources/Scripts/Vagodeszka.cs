@@ -36,11 +36,11 @@ public class Vagodeszka : MonoBehaviour
             item = transform.GetChild(0).gameObject.transform.GetChild(0).gameObject;
         else item = null;
 
+
         if (canSlice && sliced is false)
         {
-            slicing = true;
-            item.tag = "Slicing";
             Slice();
+            
         }
         else
         {
@@ -52,12 +52,16 @@ public class Vagodeszka : MonoBehaviour
             if (item.tag == "Sliceable") sliced = false;
             else if (item.tag == "Sliced") sliced = true;
         }
+        else sliced = false;
 
         
     }
 
     public void Slice()
-    {
+    {        
+        if (item.tag != "Sliceable" && item.tag != "Slicing") return;
+        slicing = true;
+        item.tag = "Slicing";
         statusBar.SetActive(true);
         GameObject statusBarFg = statusBar.transform.GetChild(0).GetChild(0).gameObject;
         statusBarFg.transform.localScale = new Vector3(elapsedTime / reqTimeToSlice, 1, 1);

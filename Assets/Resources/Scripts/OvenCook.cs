@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CookBake : MonoBehaviour
+public class OvenCook : MonoBehaviour
 {
     public List<GameObject> items = new List<GameObject>();
     public bool isFull;
@@ -94,15 +94,6 @@ public class CookBake : MonoBehaviour
             fire.transform.localScale = Vector3.one;
             fire.transform.localPosition = new Vector3(0, 0, fire.transform.localPosition.z);
         }
-
-        //if (canCook && cooking)
-        //{
-        //    transform.parent.transform.parent.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/oven_cooking");
-        //}
-        //else if (transform.parent.transform.parent.tag == "Oven")
-        //{
-        //    transform.parent.transform.parent.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/oven");
-        //}
 
         if (canCook is false)
         {
