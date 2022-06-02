@@ -143,6 +143,7 @@ public class PlayerItemInteraction : MonoBehaviour
             {
                 GameObject plate = col.gameObject.transform.Find("Item").Find("plate").gameObject;
                 GameObject burger = col.gameObject.transform.Find("Item").Find("plate").Find("Item").Find("Bread_sliced").gameObject;
+                if (burger.GetComponent<Tags>().tags.Contains(handItem.name.Split("_")[0])) return;
                 float offsetY = 0.015f;
                 float offsetZ = 0.01f;
                 foreach (var allowed in burger.GetComponent<AllowedItems>().allowedItems)

@@ -41,6 +41,7 @@ public class GameController : MonoBehaviour
         recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/vegy_soup").gameObject, new List<GameObject>() { tomato, onion, carrot });
 
         //burgers
+        recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/Burger").gameObject, new List<GameObject>() { meat });
         recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/CheeseBurger").gameObject, new List<GameObject>() { meat, cheese });
         recipes.Add(Resources.Load<GameObject>("Prefabs/Foods/CheeseTomatoBurger").gameObject, new List<GameObject>() { meat, cheese, tomato });
 
