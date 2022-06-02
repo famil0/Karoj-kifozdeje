@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3495664600322557605}
   - component: {fileID: 5814855116708922404}
   m_Layer: 0
-  m_Name: Chees_sliced
+  m_Name: Cheese_sliced
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8ce535ba60056bd419a496c15ee0e33c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8cfc490e718a6e549968db95b80df172, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1044224535266092641}
   - component: {fileID: 7555851842750007996}
+  - component: {fileID: 1707853007083094240}
   m_Layer: 0
   m_Name: Bread_sliced
   m_TagString: Sliced
@@ -52,6 +53,19 @@ MonoBehaviour:
   - {fileID: 2483934899503097607, guid: f1dce086a6e680e4ab3c48ac00204aec, type: 3}
   - {fileID: 1044224535266092640, guid: 44de7b0aff3ccd746b500455080ec23a, type: 3}
   - {fileID: 8829805936932300857, guid: e375a34343e2f1447ae2192215553afe, type: 3}
+--- !u!114 &1707853007083094240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1044224535266092640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14e81d7e1b547e3428224c0ce8f9c7af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tags: []
 --- !u!1 &2706159984954728894
 GameObject:
   m_ObjectHideFlags: 0

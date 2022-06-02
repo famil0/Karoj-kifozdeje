@@ -54,19 +54,27 @@ public class Delivery : MonoBehaviour
                 }
             }
         }
-        else if (item.tag.Contains("Burger"))
+        else if (item.transform.Find("Item").GetChild(0).name is "Bread_sliced")
         {
-            Debug.Log("asd");
-            foreach (var order in orders)
+            GameObject burger = item.transform.Find("Item").GetChild(0).gameObject;
+            for (int i = 0; i < burger.GetComponent<Tags>().tags.Count; i++)
             {
-                if (order.transform.Find("Animation").Find("Food").GetChild(0).tag == item.tag)
+                foreach (var order in orders)
                 {
-                    order.GetComponent<Order>().Done();
-                    Destroy(item.gameObject);
-                    Sequence seq = DOTween.Sequence();
-                    seq.SetDelay(3);
-                    seq.OnComplete(() => GetBackPlate());
-                    break;
+                    if (order.transform.Find("Animation").Find("Food").GetChild(0).GetComponent<Tags>().tags.Count == burger.GetComponent<Tags>().tags.Count)
+                    {
+                        if (order.transform.Find("Animation").Find("Food").GetChild(0).GetComponent<Tags>().tags[i] != burger.GetComponent<Tags>().tags[i])
+                        {
+                            return;
+                        }
+                        order.GetComponent<Order>().Done();
+                        Destroy(item.gameObject);
+                        Sequence seq = DOTween.Sequence();
+                        seq.SetDelay(3);
+                        seq.OnComplete(() => GetBackPlate());
+                        return;
+                    }
+                    else continue;
                 }
             }
         }

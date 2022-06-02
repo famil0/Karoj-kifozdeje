@@ -55,7 +55,7 @@ public class PlayerItemInteraction : MonoBehaviour
             spaceDown = false;
             //pick up items
             if (handItemSlot.transform.childCount is 0 && FindChildByName(col.gameObject, "Item").transform.childCount is not 0)
-            {                
+            {
                 GameObject item = FindChildByName(col.gameObject, "Item").transform.GetChild(0).gameObject;
                 if (item.tag == "Slicing" || item.tag == "Washing") return;
                 item.transform.parent = FindChildByName(transform.parent.gameObject, "handitem").transform;
@@ -131,7 +131,7 @@ public class PlayerItemInteraction : MonoBehaviour
                 }
             }
             //bread to plate
-            else if (handItem is not null && col.gameObject.transform.Find("Item").Find("plate") is not null && col.gameObject.transform.Find("Item").Find("plate").tag is "Clean" && col.gameObject.transform.Find("Item").Find("plate").Find("Item") is not null && handItem.name is "Bread_sliced")
+            else if (handItem is not null && col.gameObject.transform.Find("Item").Find("plate") is not null && col.gameObject.transform.Find("Item").Find("plate").tag is "Clean" && handItem.name is "Bread_sliced")
             {
                 GameObject plate = col.gameObject.transform.Find("Item").Find("plate").gameObject;
                 handItem.transform.parent = plate.transform.Find("Item");
@@ -152,7 +152,9 @@ public class PlayerItemInteraction : MonoBehaviour
                         handItem.transform.parent = burger.transform.Find("Items");
                         burger.transform.Find("top").transform.DOLocalMoveY(burger.transform.Find("Items").childCount * offsetY, 0);
                         handItem.transform.DOLocalMove(new Vector3(0, (burger.transform.Find("Items").childCount - 1) * offsetY, 0.04f - burger.transform.Find("Items").childCount * offsetZ), 0);
-                        plate.tag += allowed.name.Split("_")[0];
+                        handItem.transform.localScale = new Vector3(0.7f, 0.7f, 1);
+                        burger.GetComponent<Tags>().tags.Add(handItem.name.Split("_")[0]);
+                        burger.GetComponent<Tags>().tags.Sort();
                     }
                 }
             }
@@ -162,7 +164,6 @@ public class PlayerItemInteraction : MonoBehaviour
             {
                 ResetPan(handItem);
                 float offsetY = 0.015f;
-                float offsetZ = 0.01f;
                 GameObject burger = col.gameObject.transform.Find("Item").Find("plate").Find("Item").Find("Bread_sliced").gameObject;
                 GameObject meat = Instantiate(Resources.Load<GameObject>("Prefabs/Ingredients/Meat_baked"));
                 meat.name = meat.name.Split("(")[0];
@@ -170,6 +171,8 @@ public class PlayerItemInteraction : MonoBehaviour
                 meat.transform.localScale = new Vector3(3.125f, 3.125f, 1);
                 meat.transform.parent = burger.transform.Find("MeatSlot");
                 burger.transform.Find("top").transform.DOLocalMoveY(burger.transform.Find("Items").childCount * offsetY, 0);
+                burger.GetComponent<Tags>().tags.Add("Meat");
+                burger.GetComponent<Tags>().tags.Sort();
             }
         }
         //slice
@@ -195,7 +198,7 @@ public class PlayerItemInteraction : MonoBehaviour
             GameObject fazek = col.gameObject.transform.Find("Item").GetChild(0).gameObject;
             handItem.GetComponent<FireExtinguisher>().fazek = fazek;
             handItem.GetComponent<FireExtinguisher>().fire = fazek.transform.Find("Fire").gameObject;
-            handItem.GetComponent<FireExtinguisher>().canExtinguish = true;            
+            handItem.GetComponent<FireExtinguisher>().canExtinguish = true;
         }
 
         ctrlDown = false;
