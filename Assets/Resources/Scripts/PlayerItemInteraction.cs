@@ -163,10 +163,11 @@ public class PlayerItemInteraction : MonoBehaviour
             //baked meat to burger
             else if (handItem is not null && handItem.name is "pan" && handItem.GetComponent<PanBake>().baked && col.gameObject.transform.Find("Item").Find("plate") is not null && col.gameObject.transform.Find("Item").Find("plate").Find("Item").Find("Bread_sliced") is not null)
             {
-                ResetPan(handItem);
                 float offsetY = 0.015f;
                 GameObject burger = col.gameObject.transform.Find("Item").Find("plate").Find("Item").Find("Bread_sliced").gameObject;
+                if (burger.GetComponent<Tags>().tags.Contains("Meat")) return;
                 GameObject meat = Instantiate(Resources.Load<GameObject>("Prefabs/Ingredients/Meat_baked"));
+                ResetPan(handItem);
                 meat.name = meat.name.Split("(")[0];
                 meat.transform.DOLocalMove(Vector3.zero, 0);
                 meat.transform.localScale = new Vector3(3.125f, 3.125f, 1);
