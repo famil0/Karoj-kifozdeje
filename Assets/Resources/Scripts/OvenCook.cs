@@ -43,6 +43,7 @@ public class OvenCook : MonoBehaviour
 
     void Update()
     {
+        if (PauseMenu.gameIsPaused) return;
         if (items.Count == 3) isFull = true;
         transform.GetChild(0).gameObject.SetActive(showItems);
         if (items.Count > 0)

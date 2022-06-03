@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (PauseMenu.gameIsPaused) return;
         if (isMoving)
         {
             facingDir = moveDir;

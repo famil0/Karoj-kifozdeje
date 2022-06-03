@@ -43,6 +43,7 @@ public class PanBake : MonoBehaviour
 
     void Update()
     {
+        if (PauseMenu.gameIsPaused) return;
         if (items.Count == 1) isFull = true;
         transform.GetChild(0).gameObject.SetActive(showItems);
         if (items.Count > 0)
