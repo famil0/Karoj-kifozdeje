@@ -66,7 +66,7 @@ public class GameController : MonoBehaviour
         else
         {
             DOTween.Clear(true);
-            SceneManager.LoadScene("TimeIsOver");
+            SceneManager.LoadSceneAsync("TimeIsOver");
         }
 
         PointDigits.SetDigits(points);

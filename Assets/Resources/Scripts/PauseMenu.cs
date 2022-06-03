@@ -49,13 +49,13 @@ public class PauseMenu : MonoBehaviour
     {
         DOTween.Clear(true);
         Resume();
-        SceneManager.LoadScene("Game");      
+        SceneManager.LoadSceneAsync("Game");      
     }
 
     public void Quit()
     {
         DOTween.Clear(true);
         Resume();
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadSceneAsync("Menu");
     }
 }
