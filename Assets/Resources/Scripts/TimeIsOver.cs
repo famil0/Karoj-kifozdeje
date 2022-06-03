@@ -19,9 +19,24 @@ public class TimeIsOver : MonoBehaviour
         if (GameController.points > GameController.bestPoints)
         {
             GameController.bestPoints = GameController.points;
-            PlayerPrefs.SetInt("bestPoints", GameController.bestPoints);    
+            PlayerPrefs.SetInt($"{Menu.difficulty}bestPoints", GameController.bestPoints);
         }
-        bestPointsText.text += PlayerPrefs.GetInt("bestPoints");
+        bestPointsText.text += PlayerPrefs.GetInt($"{Menu.difficulty}bestPoints");
+        if (Menu.difficulty is 0)
+        {
+            bestPointsText.text += " (easy)";
+            currentPointsText.text += " (easy)";
+        }
+        else if (Menu.difficulty is 1)
+        {
+            bestPointsText.text += " (normal)";
+            currentPointsText.text += " (normal)";
+        }
+        else if (Menu.difficulty is 2)
+        {
+            bestPointsText.text += " (hard)";
+            currentPointsText.text += " (hard)";
+        }
         finishedOrdersText.text += GameController.finishedOrders;
         lostOrdersText.text += GameController.lostOrders;
     }
