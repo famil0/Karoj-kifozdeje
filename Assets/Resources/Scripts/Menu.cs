@@ -9,8 +9,8 @@ using TMPro;
 
 public class Menu : MonoBehaviour
 {
-    public RectTransform playMenu;
-    public RectTransform settingsMenu;
+    public Transform playMenu;
+    public Transform settingsMenu;
     public GameObject resolutionDropDown;
     public GameObject difficultyDropDown;
     public Toggle fullscreen;
@@ -22,7 +22,7 @@ public class Menu : MonoBehaviour
 
 
     private void Start()
-    {
+    {        
         playMenu.transform.localScale = Vector3.zero;
         settingsMenu.transform.localScale = Vector3.zero;
         
@@ -86,12 +86,12 @@ public class Menu : MonoBehaviour
 
     public void MoveLeft()
     {
-        GetComponent<RectTransform>().DOLocalMoveX(-800, t);
+        transform.DOLocalMoveX(-800, t);
     }
 
     public void MoveRight()
     {
-        GetComponent<RectTransform>().DOLocalMoveX(0, t);
+        transform.DOLocalMoveX(0, t);
     }
 
     public void Show(Transform tr)

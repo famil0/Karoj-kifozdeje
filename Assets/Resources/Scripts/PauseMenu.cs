@@ -11,15 +11,11 @@ public class PauseMenu : MonoBehaviour
 
     public GameObject pauseMenu;
 
-
-
-    // Start is called before the first frame update
     void Start()
     {
         pauseMenu.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -51,14 +47,15 @@ public class PauseMenu : MonoBehaviour
 
     public void Restart()
     {
-        DOTween.KillAll();
-        SceneManager.LoadScene("Game");      
+        DOTween.Clear(true);
         Resume();
+        SceneManager.LoadScene("Game");      
     }
 
     public void Quit()
     {
-        DOTween.KillAll();
+        DOTween.Clear(true);
+        Resume();
         SceneManager.LoadScene("Menu");
     }
 }
