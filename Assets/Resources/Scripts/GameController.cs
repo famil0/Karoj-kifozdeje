@@ -16,17 +16,19 @@ public class GameController : MonoBehaviour
     public Dictionary<GameObject, List<GameObject>> recipes = new Dictionary<GameObject, List<GameObject>>();
     public List<GameObject> orders = new List<GameObject>();
     Sequence seq;
+    public int timeOffset;
 
 
 
     void Start()
     {
+        timeOffset = 10;
+        
         PointDigits = Camera.main.transform.Find("PointDigits").GetChild(0).GetComponent<Digits>();
         TimeDigits = Camera.main.transform.Find("TimeDigits").GetChild(0).GetComponent<Digits>();
         usableTime = 300;
         points = 0;
-        nextOrder = new System.Random().Next(20, 31);
-        
+       
         time = 0;
         
         GameObject tomato = Resources.Load<GameObject>("Prefabs/Ingredients/tomato").gameObject;
@@ -97,7 +99,8 @@ public class GameController : MonoBehaviour
         food.transform.localScale = new Vector3(size, size, 1);
         food.name = food.name.Split("(")[0];
 
-        nextOrder = new System.Random().Next(20, 31);
+        //nextOrder = new System.Random().Next(30 - Menu.difficulty * timeOffset, 41 - Menu.difficulty * timeOffset);
+        nextOrder = 40 - Menu.difficulty * timeOffset;
         NewOrder(nextOrder);
 
         return order;
@@ -109,5 +112,5 @@ public class GameController : MonoBehaviour
         {
             orders[i].transform.DOLocalMoveY(0.7f + (i + 1) * -0.55f, 0.8f);
         }
-    }
+    }    
 }

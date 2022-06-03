@@ -9,31 +9,47 @@ using TMPro;
 
 public class Menu : MonoBehaviour
 {
-    public GameObject settingsMenu;
-    public GameObject screenResolution;
+    public RectTransform playMenu;
+    public RectTransform settingsMenu;
+    public GameObject resolutionDropDown;
+    public GameObject difficultyDropDown;
+    public Toggle fullscreen;
     public List<GameObject> buttons = new List<GameObject>();
     public float t = 0.7f;
-    public Dictionary<string, int> resolutions = new Dictionary<string, int>()
-    {
-        { "1920x1080", 0 }, { "1280x720", 1 }, { "800x600", 2 }
-    };
+
+    public static int difficulty;
 
 
 
     private void Start()
     {
-        settingsMenu.SetActive(false);
-        settingsMenu.GetComponent<RectTransform>().transform.localScale = Vector3.zero;
+        playMenu.transform.localScale = Vector3.zero;
+        settingsMenu.transform.localScale = Vector3.zero;
+        
+        resolutionDropDown.GetComponent<TMP_Dropdown>().value = resolutionDropDown.GetComponent<TMP_Dropdown>().options.FindIndex(option => option.text == $"{Screen.width}x{Screen.height}");
 
-        foreach (var res in resolutions)
-        {
-            screenResolution.GetComponent<TMP_Dropdown>().options.Add(new TMP_Dropdown.OptionData(text: res.Key));
-        }
-        screenResolution.transform.Find("Label").GetComponent<TMP_Text>().text = resolutions.ElementAt(0).Key;
+        difficulty = 1;
+        difficultyDropDown.GetComponent<TMP_Dropdown>().value = difficulty;
     }
-    public void Play()
+
+    public void PlayShow()
     {
-        SceneManager.LoadScene("Game");
+        foreach (var button in buttons)
+        {
+            button.GetComponent<Button>().interactable = false;
+        }
+        MoveLeft();
+        Show(playMenu);
+    }
+
+    public void PlayHide()
+    {
+        foreach (var button in buttons)
+        {
+            button.GetComponent<Button>().interactable = true;
+        }
+        MoveRight();
+        Hide(playMenu);
     }
 
     public void SettingsShow()
@@ -42,8 +58,8 @@ public class Menu : MonoBehaviour
         {
             button.GetComponent<Button>().interactable = false;
         }
-        GetComponent<RectTransform>().transform.DOLocalMoveX(-800, t);
-        settingsMenu.GetComponent<RectTransform>().transform.DOScale(Vector3.one, t);
+        MoveLeft();
+        Show(settingsMenu);
     }
 
     public void SettingsHide()
@@ -52,8 +68,8 @@ public class Menu : MonoBehaviour
         {
             button.GetComponent<Button>().interactable = true;
         }
-        GetComponent<RectTransform>().transform.DOLocalMoveX(0, t);
-        settingsMenu.GetComponent<RectTransform>().transform.DOScale(Vector3.zero, t);
+        MoveRight();
+        Hide(settingsMenu);
     }
 
     public void Exit()
@@ -63,8 +79,38 @@ public class Menu : MonoBehaviour
 
     public void SetScreen()
     {
-        int width = int.Parse(resolutions.ElementAt(screenResolution.GetComponent<TMP_Dropdown>().value).Key.Split("x")[0]);
-        int height = int.Parse(resolutions.ElementAt(screenResolution.GetComponent<TMP_Dropdown>().value).Key.Split("x")[1]);
-        Screen.SetResolution(width, height, true);
+        int width = int.Parse(resolutionDropDown.transform.Find("Label").GetComponent<TMP_Text>().text.Split("x")[0]);
+        int height = int.Parse(resolutionDropDown.transform.Find("Label").GetComponent<TMP_Text>().text.Split("x")[1]);
+        Screen.SetResolution(width, height, fullscreen.isOn);
+    }
+
+    public void MoveLeft()
+    {
+        GetComponent<RectTransform>().DOLocalMoveX(-800, t);
+    }
+
+    public void MoveRight()
+    {
+        GetComponent<RectTransform>().DOLocalMoveX(0, t);
+    }
+
+    public void Show(Transform tr)
+    {
+        tr.DOScale(Vector3.one, t);
+    }
+
+    public void Hide(Transform tr)
+    {
+        tr.DOScale(Vector3.zero, t);
+    }
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene("Game");
+    }
+
+    public void SetDifficulty()
+    {
+        difficulty = difficultyDropDown.GetComponent<TMP_Dropdown>().value;
     }
 }
