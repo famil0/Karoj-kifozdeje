@@ -24,7 +24,8 @@ public class Order : MonoBehaviour
         if (elapsedTime >= timeToFinish)
         {
             Delete();
-            gameController.points -= 7;
+            GameController.lostOrders--;
+            GameController.points -= 7;
         }
         else if (elapsedTime >= timeToFinish - 7) anim.SetTrigger("TimeIsOver");
 
@@ -34,14 +35,15 @@ public class Order : MonoBehaviour
     }
     public void Done()
     {
+        GameController.finishedOrders++;
         Sequence seq = DOTween.Sequence();
         transform.Find("Animation").GetComponent<Animator>().enabled = false;
         transform.Find("Animation").Find("background").GetComponent<SpriteRenderer>().color = Color.green;
         seq.Append(transform.DOLocalMoveX(-1.7f, 0.5f));
         seq.OnComplete( () => Delete() );
 
-        if (elapsedTime <= timeToFinish * 0.66666f) gameController.points += 10;
-        else gameController.points += 5;
+        if (elapsedTime <= timeToFinish * 0.66666f) GameController.points += 10;
+        else GameController.points += 5;
 
 
     }

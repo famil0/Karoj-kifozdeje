@@ -1980,7 +1980,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a41bfc67377044c8d73e7b3894a87d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  points: 0
   nextOrder: 0
   usableTime: 0
   time: 0

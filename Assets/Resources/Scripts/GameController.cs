@@ -3,11 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using DG.Tweening;
 
 public class GameController : MonoBehaviour
 {
-    public int points;
+    public static int points;
+    public static int bestPoints;
+    public static int finishedOrders;
+    public static int lostOrders;
+
     public int nextOrder;
     public int usableTime;
     public float time;
@@ -57,6 +62,11 @@ public class GameController : MonoBehaviour
         if (time <= usableTime)
         {
             time += Time.deltaTime;
+        }
+        else
+        {
+            DOTween.Clear(true);
+            SceneManager.LoadScene("TimeIsOver");
         }
 
         PointDigits.SetDigits(points);
