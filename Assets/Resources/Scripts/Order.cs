@@ -24,7 +24,7 @@ public class Order : MonoBehaviour
         if (elapsedTime >= timeToFinish)
         {
             Delete();
-            GameController.lostOrders--;
+            GameController.lostOrders++;
             GameController.points -= 7;
         }
         else if (elapsedTime >= timeToFinish - 7) anim.SetTrigger("TimeIsOver");
